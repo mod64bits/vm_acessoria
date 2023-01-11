@@ -3,7 +3,7 @@ from apps.core.models import Base
 
 
 class Cliente(Base):
-    documento = models.CharField('CPF/CNPJ', max_length=50, unique=True)
+    documento = models.CharField('CPF/CNPJ', max_length=50, unique=True, null=True, blank=True)
     email = models.EmailField('E-mail', null=True, blank=True)
 
     class Meta:
