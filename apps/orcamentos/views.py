@@ -1,5 +1,6 @@
 import decimal
-
+import locale
+from django.db.models import Sum
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic.edit import UpdateView
@@ -28,6 +29,19 @@ class OrcamentoUpdate(UpdateView):
     form_class = OrcamentoUpdateForm
     template_name_suffix = '_update_form'
 
+    def total_orcamento(self):
+        locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
+        orcamento = self.get_object().id
+        total = ItemProduto.objects.filter(orcamento_id=orcamento).aggregate(Sum('total'))
+        total_convert = total['total__sum']
+        valor = locale.currency(total_convert, grouping=True, symbol=False)
+        return valor
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['total'] = self.total_orcamento()
+        return context
+
 
 class AdcionarProdutoView(BSModalCreateView):
     template_name = 'orcamentos/adcionar_item.html'
@@ -49,6 +63,5 @@ class AdcionarProdutoView(BSModalCreateView):
         form.instance.total = decimal.Decimal(form.instance.preco * form.instance.quantidade)
 
         return super(AdcionarProdutoView, self).form_valid(form)
-
 
 

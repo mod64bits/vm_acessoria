@@ -8,7 +8,12 @@ from apps.core.ultils import GeradorKeys
 from apps.core.ultils import Datas
 
 
+
+
+
+
 class Orcamento(models.Model):
+
     validade = models.DateField('Validade', default=Datas().vencimento())
     STATUS_CHOICES = (
         (0, 'Não Enviado'),
