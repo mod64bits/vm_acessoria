@@ -32,6 +32,8 @@ class Orcamento(models.Model):
         related_name='orcamento_cliente'
     )
     descricao = models.TextField('Descrição')
+    created = models.DateTimeField('Criado em', auto_now_add=True)
+    modified = models.DateTimeField('Modificado em', auto_now=True)
 
     def get_absolute_url(self):
         return reverse('orcamento:update_orcamento', kwargs={'pk': self.id})
