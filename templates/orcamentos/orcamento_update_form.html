@@ -1,5 +1,6 @@
 {% extends 'core/base.html' %}
 {% load static %}
+{% load l10n %}
 {% load widget_tweaks %}
 
 {% block css %}
@@ -14,27 +15,82 @@
 {% endblock css %}
 
 {% block content %}
+    {% include 'orcamentos/includes/_modals.html' %}
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1>Advanced Form</h1>
-                    </div>
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Advanced Form</li>
-                        </ol>
-                    </div>
-                </div>
+
             </div><!-- /.container-fluid -->
         </section>
 
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
+
+                            <div class="info-box-content">
+                                <span class="info-box-text">Total Equipamentos</span>
+                                <span class="info-box-number">
+                  {{ total_produtos.total }}
+
+                </span>
+                            </div>
+                            <!-- /.info-box-content -->
+                        </div>
+                        <!-- /.info-box -->
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <div class="info-box mb-3">
+                            <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-thumbs-up"></i></span>
+
+                            <div class="info-box-content">
+                                <span class="info-box-text">Total Mão de Obra</span>
+                                <span class="info-box-number">{{ total_maos_de_obras.total }}</span>
+                            </div>
+                            <!-- /.info-box-content -->
+                        </div>
+                        <!-- /.info-box -->
+                    </div>
+                    <!-- /.col -->
+
+                    <!-- fix for small devices only -->
+                    <div class="clearfix hidden-md-up"></div>
+
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <div class="info-box mb-3">
+                            <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
+
+                            <div class="info-box-content">
+                                <span class="info-box-text">Sales</span>
+                                <span class="info-box-number">760</span>
+                            </div>
+                            <!-- /.info-box-content -->
+                        </div>
+                        <!-- /.info-box -->
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <div class="info-box mb-3">
+                            <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
+
+                            <div class="info-box-content">
+                                <span class="info-box-text">New Members</span>
+                                <span class="info-box-number">2,000</span>
+                            </div>
+                            <!-- /.info-box-content -->
+                        </div>
+                        <!-- /.info-box -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+
+
                 <div class="card card-default">
                     <div class="card-header">
                         <h3 class="card-title">Select2 (Bootstrap4 Theme)</h3>
@@ -64,12 +120,8 @@
 
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>Date:</label>
-
-                                        {#                                            <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate"/>#}
+                                        <label>{{ form.validade.label }}</label>
                                         {% render_field form.validade class="form-control date"  %}
-
-
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -92,19 +144,153 @@
                                 <button type="submit" class="btn btn-primary">Atualizar Cliente</button>
                             </div>
                         </form>
-                    </div>
 
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card card-primary card-outline">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="fas fa-edit"></i>
+
+                                </h3>
+                            </div>
+                            <div class="card-body pad table-responsive">
+                                <div class="card-body">
+                                    <button id="add-produto" class="btn btn-app bg-secondary" type="button" name="button" data-form-url="{% url 'orcamento:adcionar_produto_orcamento' object.id  %}">
+                                        <span class="badge bg-success">{{ total_produtos.qt }}</span>
+                                        <i class="fas fa-barcode"></i> Produtos
+                                    </button>
+                                    <button class="btn btn-app bg-success" id="add-mao-de-obra" type="button" name="mao" data-form-url="{% url 'orcamento:adcionar_mao_de_obra_orcamento' object.id  %}">
+                                        <span class="badge bg-purple">{{ total_maos_de_obras.qt }}</span>
+                                        <i class="fas fa-users"></i> Mao de Obra
+                                    </button>
+                                    <a class="btn btn-app bg-danger">
+                                        <span class="badge bg-teal">67</span>
+                                        <i class="fas fa-inbox"></i> Orders
+                                    </a>
+                                    <a class="btn btn-app bg-warning">
+                                        <span class="badge bg-info">12</span>
+                                        <i class="fas fa-envelope"></i> Inbox
+                                    </a>
+                                    <a class="btn btn-app bg-info">
+                                        <span class="badge bg-danger">531</span>
+                                        <i class="fas fa-heart"></i> Likes
+                                    </a>
+                                </div>
+
+                            </div>
+                            <!-- /.card -->
+                        </div>
+                    </div>
+                    <!-- /.col -->
+                </div>
+
+                <div class="row">
+                    <div class="col-6">
+                        <div class="card card-yellow card-outline">
+                            <div class="card-header">
+                                <h3 class="card-title">Equipamentos</h3>
+                            </div>
+                            <!-- ./card-header -->
+                            <div class="card-body">
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Produto</th>
+                                        <th>Quantidade</th>
+                                        <th>Preço</th>
+                                        <th>Total</th>
+
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for item in object.produto_orcamento.all %}
+                                        <tr data-widget="expandable-table" aria-expanded="false">
+                                            <td>{{ item.id }}</td>
+                                            <td>{{ item.produto }}</td>
+                                            <td>{{ item.quantidade }}</td>
+                                            <td>{{ item.preco }}</td>
+                                            <td>{{ item.total }}</td>
+                                        </tr>
+                                        <tr class="expandable-body">
+                                            <td colspan="5">
+                                                <p>
+                                                    Colocar relação de compra e vendas so para adim
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                    <div class="col-6">
+                        <div class="card card-yellow card-outline">
+                            <div class="card-header">
+                                <h3 class="card-title">Mão de Obra</h3>
+                            </div>
+                            <!-- ./card-header -->
+                            <div class="card-body">
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Produto</th>
+                                        <th>Quantidade</th>
+                                        <th>Preço</th>
+                                        <th>Total</th>
+
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for item_mao in object.mao_obra_orcamento.all %}
+                                        <tr data-widget="expandable-table" aria-expanded="false">
+                                            <td>{{ item_mao.id }}</td>
+                                            <td>{{ item_mao.mao_de_obra }}</td>
+                                            <td>{{ item_mao.quantidade }}</td>
+                                            <td>{{ item_mao.preco }}</td>
+                                            <td>{{ item_mao.total }}</td>
+                                        </tr>
+                                        <tr class="expandable-body">
+                                            <td colspan="5">
+                                                <p>
+                                                    Colocar relação de compra e vendas so para adim
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
                 </div>
             </div>
             <!-- /.container-fluid -->
         </section>
         <!-- /.content -->
+
     </div>
 {% endblock content %}
 
 {% block js %}
     <script src="{% static 'core/plugins/jquery/jquery.min.js' %}"></script>
     {% include 'core/includes/base_js_sem_jquery.html' %}
+    <script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>
+    <!-- You can alternatively load the minified version -->
+    <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
     <script src="{% static 'core/plugins/select2/js/select2.full.min.js' %}"></script>
 
 
@@ -120,5 +306,25 @@
             })
         })
 
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            function readBookModalForm() {
+                $("#add-produto").each(function () {
+                    $(this).modalForm({formURL: $(this).data("form-url")});
+                });
+            }
+            readBookModalForm();
+
+            function itemMaoDeObraModalForm() {
+                $("#add-mao-de-obra").each(function () {
+                    $(this).modalForm({formURL: $(this).data("form-url")});
+                });
+            }
+            itemMaoDeObraModalForm();
+
+        });
     </script>
 {% endblock js %}

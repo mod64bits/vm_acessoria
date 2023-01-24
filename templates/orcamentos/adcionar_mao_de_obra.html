@@ -1,10 +1,9 @@
 {% load widget_tweaks %}
-
 <form method="post" action="">
     {% csrf_token %}
 
     <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel2">Modal title</h4>
+        <h4 class="modal-title" id="myModalLabel2">Mão de Obra</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -14,8 +13,8 @@
         <div class="col-md-12">
             <div class="form-group">
 
-                <label for="{{ form.produto.id }}">{{ form.produto.label }}</label>
-                {% render_field form.produto class="form-control select2bs4" type="text" style="width: 100%;"%}
+                <label for="{{ form.mao_de_obra.id }}">{{ form.mao_de_obra.label }}</label>
+                {% render_field form.mao_de_obra class="form-control select2bs4" type="text" style="width: 100%;"%}
             </div>
         </div>
         <div class="field item form-group">

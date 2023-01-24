@@ -3,7 +3,7 @@ from django.forms import ModelForm
 from bootstrap_modal_forms.forms import BSModalModelForm
 from bootstrap_datepicker_plus.widgets import DatePickerInput
 
-from .models import Orcamento, ItemProduto
+from .models import Orcamento, ItemProduto, ItemMaoDeObra
 
 
 class OrcamentoUpdateForm(ModelForm):
@@ -16,13 +16,13 @@ class OrcamentoUpdateForm(ModelForm):
         }
 
 
-
-
 class OrcamentoProdutoForm(BSModalModelForm):
-    # def __init__(self, *args, **kwargs):
-    #     super(OrcamentoProdutoForm, self).__init__(*args, **kwargs)
-    #     self.fields['orcamento'] = Form.
-    print()
     class Meta:
         model = ItemProduto
+        exclude = ['orcamento']
+
+
+class OrcamentoMaoDeObraForm(BSModalModelForm):
+    class Meta:
+        model = ItemMaoDeObra
         exclude = ['orcamento']
