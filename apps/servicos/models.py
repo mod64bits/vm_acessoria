@@ -24,7 +24,7 @@ class MaoDeObra(models.Model):
         related_name='tipo_mao_obra'
     )
     descricao = models.TextField('Descrição')
-    preco_mao_de_obra = models.DecimalField('Preço Mão de Obra', decimal_places=2, max_digits=8, default=0)
+    preco_compra = models.DecimalField('Preço Mão de Obra', decimal_places=2, max_digits=8, default=0)
     created = models.DateTimeField('Criado em', auto_now_add=True)
     modified = models.DateTimeField('Modificado em', auto_now=True)
 

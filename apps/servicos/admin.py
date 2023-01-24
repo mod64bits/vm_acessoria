@@ -8,7 +8,7 @@ class TipoMaoDeObraAdmin(admin.ModelAdmin):
 
 
 class MaoDeObraAdmin(admin.ModelAdmin):
-    list_display = ['tipo_de_mao_de_obra', 'descricao', 'preco_mao_de_obra', 'created', 'modified']
+    list_display = ['tipo_de_mao_de_obra', 'descricao', 'preco_compra', 'created', 'modified']
     search_fields = ['tipo_de_mao_de_obra', 'tipo_de_mao_de_obra__nome']
     list_filter = ['created', 'modified']
 

@@ -1,12 +1,10 @@
 import decimal
 import locale
+from decimal import Decimal
 from django.db.models import Sum
-from django.http import HttpResponseRedirect
-from django.shortcuts import render
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView
-from django.urls import reverse_lazy
 from .forms import OrcamentoProdutoForm, OrcamentoMaoDeObraForm
 from bootstrap_modal_forms.generic import BSModalCreateView
 from .models import Orcamento, ItemProduto, ItemMaoDeObra
@@ -29,7 +27,6 @@ class OrcamentoUpdate(UpdateView):
     form_class = OrcamentoUpdateForm
     template_name_suffix = '_update_form'
 
-
     def total_itens(self, instancia):
         context = {
             "total": 0,
@@ -46,12 +43,70 @@ class OrcamentoUpdate(UpdateView):
             context["total"] = locale.currency(total_convert, grouping=True, symbol=True)
             context['qt'] = qt
             return context
+        context['total'] = locale.currency(0, grouping=True, symbol=True)
+        return context
+
+    def _total_orcamento_compras(self, instancia):
+
+        orcamento = self.get_object().id
+
+        _total_compra = Decimal(0)
+
+        if instancia.objects.filter(orcamento_id=orcamento).exists():
+            itens = instancia.objects.filter(orcamento_id=orcamento)
+
+            if instancia is ItemProduto:
+                for item in itens:
+                    _total_compra += item.produto.preco_compra * item.quantidade
+                return _total_compra
+
+            if instancia is ItemMaoDeObra:
+                for item in itens:
+                    _total_compra += item.mao_de_obra.preco_compra * item.quantidade
+                return _total_compra
+
+        return _total_compra
+
+
+
+
+    def calculos_total_orcamento(self):
+        context = {}
+        locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
+        orcamento = self.get_object().id
+        _total_mao_de_obra_venda = ItemMaoDeObra.objects.filter(orcamento_id=orcamento).aggregate(Sum('total'))
+        _total_equipamentos_venda = ItemProduto.objects.filter(orcamento_id=orcamento).aggregate(Sum('total'))
+
+
+        if _total_equipamentos_venda['total__sum'] is not None:
+            total_equipamentos_venda = _total_equipamentos_venda['total__sum']
+        else:
+            total_equipamentos_venda = Decimal(0)
+
+        if _total_mao_de_obra_venda['total__sum']:
+            total_mao_de_obra_venda = _total_mao_de_obra_venda['total__sum']
+        else:
+            total_mao_de_obra_venda = Decimal(0)
+
+        total_equipamentos_compra = self._total_orcamento_compras(ItemProduto)
+        total_mao_de_obra_compra = self._total_orcamento_compras(ItemMaoDeObra)
+        total_orcamento = total_equipamentos_venda + total_mao_de_obra_venda
+        total_lucro_equipamentos = total_equipamentos_venda - total_equipamentos_compra
+        total_lucro_mao_de_obra = total_mao_de_obra_venda - total_mao_de_obra_compra
+        total_lucro = total_lucro_equipamentos + total_lucro_mao_de_obra
+
+        context['total_orcamento'] = locale.currency(total_orcamento, grouping=True, symbol=True)
+        context['total_lucro'] = locale.currency(total_lucro, grouping=True, symbol=True)
+        context['total_lucro_equipamentos'] = locale.currency(total_lucro_equipamentos, grouping=True, symbol=True)
+        context['total_lucro_mao_de_obras'] = locale.currency(total_lucro_mao_de_obra, grouping=True, symbol=True)
+
         return context
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['total_produtos'] = self.total_itens(ItemProduto)
         context['total_maos_de_obras'] = self.total_itens(ItemMaoDeObra)
+        context['total_orcamento'] = self.calculos_total_orcamento()
         return context
 
 
@@ -84,8 +139,10 @@ class AdiconarMaoDeObraView(BSModalCreateView):
     def form_valid(self, form):
         orcamento = Orcamento.objects.get(id=self.kwargs['pk'])
         qt = form.instance.quantidade
-        if ItemMaoDeObra.objects.filter(mao_de_obra_id=form.instance.mao_de_obra.id, orcamento_id=self.kwargs['pk']).exists():
-            mao_obra = ItemMaoDeObra.objects.get(mao_de_obra_id=form.instance.produto.id, orcamento_id=self.kwargs['pk'])
+        if ItemMaoDeObra.objects.filter(mao_de_obra_id=form.instance.mao_de_obra.id,
+                                        orcamento_id=self.kwargs['pk']).exists():
+            mao_obra = ItemMaoDeObra.objects.get(mao_de_obra_id=form.instance.produto.id,
+                                                 orcamento_id=self.kwargs['pk'])
             form.instance = mao_obra
             form.instance.quantidade += qt
         form.instance.orcamento = orcamento
