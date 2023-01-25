@@ -208,9 +208,9 @@
                                         <span class="badge bg-purple">{{ total_maos_de_obras.qt }}</span>
                                         <i class="fas fa-users"></i> Mao de Obra
                                     </button>
-                                    <a class="btn btn-app bg-danger">
+                                    <a href="{% url 'orcamento:gerar_orcamento' object.id %}" class="btn btn-app bg-danger">
                                         <span class="badge bg-teal">67</span>
-                                        <i class="fas fa-inbox"></i> Orders
+                                        <i class="fas fa-inbox"></i> Imprimir
                                     </a>
                                     <a class="btn btn-app bg-warning">
                                         <span class="badge bg-info">12</span>
