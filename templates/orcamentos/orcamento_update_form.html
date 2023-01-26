@@ -131,6 +131,16 @@
                                                 <form method="post">
                                                     {% csrf_token %}
                                                     {{ form.media }}
+                                                     <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+
+                                                                <label>{{ form.empresa.label }}</label>
+                                                                {% render_field form.empresa class="form-control select2bs4" type="text" style="width: 100%;"%}
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
                                                     <div class="row">
                                                         <div class="col-md-4">
                                                             <div class="form-group">

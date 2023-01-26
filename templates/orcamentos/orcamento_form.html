@@ -13,7 +13,7 @@
     <script src="//cdn.bootcss.com/moment.js/2.17.1/moment.min.js"></script>
 {% endblock css %}
 
-
+{% block titulo_pagina %}Novo Orçamento{% endblock titulo_pagina %}
 {% block content %}
      <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -26,7 +26,7 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">General Form</li>
+              <li class="breadcrumb-item active">Novo Orçamento</li>
             </ol>
           </div>
         </div>
@@ -50,6 +50,12 @@
                    {% csrf_token %}
                             {{ form.media }}
                 <div class="card-body">
+                    <div class="form-group row">
+                    <label for="{{ form.empresa.nome.id }}" class="col-sm-2 col-form-label">{{ form.empresa.label }}</label>
+                    <div class="col-sm-10">
+                      {% render_field form.empresa class="form-control select2bs4" type="text" style="width: 100%;"%}
+                    </div>
+                  </div>
                   <div class="form-group row">
                     <label for="{{ form.cliente.nome.id }}" class="col-sm-2 col-form-label">{{ form.cliente.label }}</label>
                     <div class="col-sm-10">

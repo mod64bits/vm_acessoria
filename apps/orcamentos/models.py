@@ -3,19 +3,27 @@ from django.urls import reverse
 from apps.core.models import Base
 from apps.servicos.models import MaoDeObra
 from apps.clientes.models import Cliente
+from apps.empresas.models import Empresa
 from apps.produtos.models import Produto
 from apps.core.ultils import GeradorKeys
 from apps.core.ultils import Datas
 
 
 class Orcamento(models.Model):
-    validade = models.DateField('Validade', default=Datas().vencimento())
     STATUS_CHOICES = (
         (0, 'Não Enviado'),
         (1, 'Em Analise'),
         (2, 'Aprovado'),
         (3, 'Cancelada'),
     )
+    validade = models.DateField('Validade', default=Datas().vencimento())
+    empresa = models.ForeignKey(
+        Empresa,
+        on_delete=models.CASCADE,
+        verbose_name='Empresa para o Orçamento',
+        related_name='empresa_orcamento',
+    )
+
     status = models.IntegerField(
         'Situação', choices=STATUS_CHOICES, default=0, blank=True
     )
