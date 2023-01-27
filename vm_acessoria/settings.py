@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'bootstrap4',
     'bootstrap_modal_forms',
+    'bootstrapform',
     'bootstrap_datepicker_plus',
 
     'apps.users',

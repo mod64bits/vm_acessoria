@@ -11,6 +11,8 @@ from bootstrap_modal_forms.generic import BSModalCreateView
 from .models import Orcamento, ItemProduto, ItemMaoDeObra
 from .forms import OrcamentoUpdateForm
 
+from apps.core.ultils import GeradorKeys
+
 
 class GerarOrcamentoView(DetailView):
     model = Orcamento
@@ -108,6 +110,10 @@ class OrcamentosView(ListView):
 class NovoOrcamento(CreateView):
     form_class = OrcamentoUpdateForm
     template_name = 'orcamentos/orcamento_form.html'
+
+    def form_valid(self, form):
+        form.instance.codigo = GeradorKeys().key()
+        return super(NovoOrcamento, self).form_valid(form)
 
 
 class OrcamentoUpdate(UpdateView):

@@ -27,7 +27,7 @@ class Orcamento(models.Model):
     status = models.IntegerField(
         'Situação', choices=STATUS_CHOICES, default=0, blank=True
     )
-    codigo = models.CharField("Codigo", max_length=20, editable=False, default=GeradorKeys().key(), unique=True)
+    codigo = models.CharField("Codigo", max_length=20, editable=False, unique=True)
     cliente = models.ForeignKey(
         Cliente,
         on_delete=models.CASCADE,
