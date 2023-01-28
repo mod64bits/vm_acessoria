@@ -1,0 +1,28 @@
+<table id="books-table" class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Nome</th>
+        <th>Ação</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in object_list %}
+        <tr>
+            <td>{{ item.nome }}</td>
+
+            <td>
+
+                <button type="button" class="update-cliente btn btn-sm btn-primary" data-form-url="{% url 'produtos:atualizar_fornecedor' item.pk %}">
+                    <span class="fas fa-pencil-alt"></span>
+                </button>
+                <button type="button" class="delete-fornecedor btn btn-sm btn-danger" data-form-url="{% url 'produtos:delete_fornecedor' item.pk %}">
+                    <span class="fa fa-trash"></span>
+                </button>
+            </td>
+        </tr>
+
+    {% endfor %}
+
+    </tbody>
+</table>
