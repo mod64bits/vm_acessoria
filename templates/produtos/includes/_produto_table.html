@@ -1,0 +1,36 @@
+<table id="books-table" class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Nome</th>
+        <th>Categoria</th>
+        <th>Fornecedor</th>
+        <th>Preço</th>
+        <th>Ação</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in object_list %}
+        <tr>
+            <td>{{ item.nome }}</td>
+            <td>{{ item.categoria }}</td>
+            <td>{{ item.fornecedor }}</td>
+            <td>{{ item.preco_compra }}</td>
+
+            <td>
+                <button type="button" class="read-produto btn btn-sm btn-primary" data-form-url="{% url 'produtos:read_produto' item.pk %}">
+                    <span class="fa fa-eye"></span>
+                </button>
+                <button type="button" class="update-produto btn btn-sm btn-primary" data-form-url="{% url 'produtos:atualizar_produto' item.pk %}">
+                    <span class="fas fa-pencil-alt"></span>
+                </button>
+                <button type="button" class="delete-produto btn btn-sm btn-danger" data-form-url="{% url 'produtos:delete_produto' item.pk %}">
+                    <span class="fa fa-trash"></span>
+                </button>
+            </td>
+        </tr>
+
+    {% endfor %}
+
+    </tbody>
+</table>

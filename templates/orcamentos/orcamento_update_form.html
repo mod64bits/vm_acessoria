@@ -1,0 +1,380 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load l10n %}
+{% load widget_tweaks %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'core/plugins/select2/css/select2.min.css' %}">
+    <link rel="stylesheet" href="{% static 'core/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'core/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css' %}">
+
+    <script src="//cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="//cdn.bootcss.com/moment.js/2.17.1/moment.min.js"></script>
+{% endblock css %}
+
+{% block content %}
+    {% include 'orcamentos/includes/_modals.html' %}
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+
+            </div><!-- /.container-fluid -->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
+
+                            <div class="info-box-content">
+                                <span class="info-box-text">Total Equipamentos</span>
+                                <span class="info-box-number">
+                  {{ total_produtos.total }}
+
+                </span>
+                            </div>
+                            <!-- /.info-box-content -->
+                        </div>
+                        <!-- /.info-box -->
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <div class="info-box mb-3">
+                            <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-users"></i></span>
+
+                            <div class="info-box-content">
+                                <span class="info-box-text">Total Mão de Obra</span>
+                                <span class="info-box-number">{{ total_maos_de_obras.total }}</span>
+                            </div>
+                            <!-- /.info-box-content -->
+                        </div>
+                        <!-- /.info-box -->
+                    </div>
+                    <!-- /.col -->
+
+                    <!-- fix for small devices only -->
+                    <div class="clearfix hidden-md-up"></div>
+
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <div class="info-box mb-3">
+                            <span class="info-box-icon bg-success elevation-1"><i class="fas fa-credit-card"></i></span>
+
+                            <div class="info-box-content">
+                                <span class="info-box-text">Total Orçamento</span>
+                                <span class="info-box-number">{{ total_orcamento.total_orcamento }}</span>
+                            </div>
+                            <!-- /.info-box-content -->
+                        </div>
+                        <!-- /.info-box -->
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <div class="info-box mb-3">
+                            <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-thumbs-up"></i></span>
+
+                            <div class="info-box-content">
+                                <span class="info-box-text">Lucro</span>
+                                <span class="info-box-number">{{ total_orcamento.total_lucro }}</span>
+                            </div>
+                            <!-- /.info-box-content -->
+                        </div>
+                        <!-- /.info-box -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-sm-12">
+                        <div class="card card-primary card-tabs">
+                            <div class="card-header p-0 pt-1">
+                                <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="custom-tabs-one-home-tab" data-toggle="pill" href="#custom-tabs-one-home" role="tab" aria-controls="custom-tabs-one-home" aria-selected="true">Cliente</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="custom-tabs-one-profile-tab" data-toggle="pill" href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false">Empresa</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="custom-tabs-one-messages-tab" data-toggle="pill" href="#custom-tabs-one-messages" role="tab" aria-controls="custom-tabs-one-messages" aria-selected="false">Analise</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="custom-tabs-one-settings-tab" data-toggle="pill" href="#custom-tabs-one-settings" role="tab" aria-controls="custom-tabs-one-settings" aria-selected="false">Settings</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="card-body">
+                                <div class="tab-content" id="custom-tabs-one-tabContent">
+                                    <div class="tab-pane fade show active" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
+
+                                        <div class="card card-default">
+                                            <div class="card-header">
+                                                <h3 class="card-title">Atualizan Informações do Cliente</h3>
+
+                                                <div class="card-tools">
+                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                        <i class="fas fa-minus"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                                        <i class="fas fa-times"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <!-- /.card-header -->
+                                            <div class="card-body">
+                                                <form method="post">
+                                                    {% csrf_token %}
+                                                    {{ form.media }}
+                                                     <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+
+                                                                <label>{{ form.empresa.label }}</label>
+                                                                {% render_field form.empresa class="form-control select2bs4" type="text" style="width: 100%;"%}
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+
+                                                                <label>{{ form.cliente.label }}</label>
+                                                                {% render_field form.cliente class="form-control select2bs4" type="text" style="width: 100%;"%}
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label>{{ form.validade.label }}</label>
+                                                                {% render_field form.validade class="form-control date"  %}
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+
+                                                                <label>{{ form.status.label }}</label>
+                                                                {% render_field form.status class="form-control select2bs4" type="text" style="width: 100%;"%}
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-12">
+                                                            <!-- textarea -->
+                                                            <div class="form-group">
+                                                                <label>{{ forms.descricao.label }}</label>
+
+                                                                {% render_field form.descricao class="form-control" rows="3" placeholder="Descrição ..."%}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-footer">
+                                                        <button type="submit" class="btn btn-primary">Atualizar Cliente</button>
+                                                    </div>
+                                                </form>
+
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="tab-pane fade" id="custom-tabs-one-profile" role="tabpanel" aria-labelledby="custom-tabs-one-profile-tab">
+                                        Mauris tincidunt mi at erat gravida, eget tristique urna bibendum. Mauris pharetra purus ut ligula tempor, et vulputate metus facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Maecenas sollicitudin, nisi a luctus interdum, nisl ligula placerat mi, quis posuere purus ligula eu lectus. Donec nunc tellus, elementum sit amet ultricies at, posuere nec nunc. Nunc euismod pellentesque diam.
+                                    </div>
+                                    <div class="tab-pane fade" id="custom-tabs-one-messages" role="tabpanel" aria-labelledby="custom-tabs-one-messages-tab">
+                                        Morbi turpis dolor, vulputate vitae felis non, tincidunt congue mauris. Phasellus volutpat augue id mi placerat mollis. Vivamus faucibus eu massa eget condimentum. Fusce nec hendrerit sem, ac tristique nulla. Integer vestibulum orci odio. Cras nec augue ipsum. Suspendisse ut velit condimentum, mattis urna a, malesuada nunc. Curabitur eleifend facilisis velit finibus tristique. Nam vulputate, eros non luctus efficitur, ipsum odio volutpat massa, sit amet sollicitudin est libero sed ipsum. Nulla lacinia, ex vitae gravida fermentum, lectus ipsum gravida arcu, id fermentum metus arcu vel metus. Curabitur eget sem eu risus tincidunt eleifend ac ornare magna.
+                                    </div>
+                                    <div class="tab-pane fade" id="custom-tabs-one-settings" role="tabpanel" aria-labelledby="custom-tabs-one-settings-tab">
+                                        Pellentesque vestibulum commodo nibh nec blandit. Maecenas neque magna, iaculis tempus turpis ac, ornare sodales tellus. Mauris eget blandit dolor. Quisque tincidunt venenatis vulputate. Morbi euismod molestie tristique. Vestibulum consectetur dolor a vestibulum pharetra. Donec interdum placerat urna nec pharetra. Etiam eget dapibus orci, eget aliquet urna. Nunc at consequat diam. Nunc et felis ut nisl commodo dignissim. In hac habitasse platea dictumst. Praesent imperdiet accumsan ex sit amet facilisis.
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.card -->
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card card-primary card-outline">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="fas fa-edit"></i>
+
+                                </h3>
+                            </div>
+                            <div class="card-body pad table-responsive">
+                                <div class="card-body">
+                                    <button id="add-produto" class="btn btn-app bg-secondary" type="button" name="button" data-form-url="{% url 'orcamento:adcionar_produto_orcamento' object.id  %}">
+                                        <span class="badge bg-success">{{ total_produtos.qt }}</span>
+                                        <i class="fas fa-barcode"></i> Produtos
+                                    </button>
+                                    <button class="btn btn-app bg-success" id="add-mao-de-obra" type="button" name="mao" data-form-url="{% url 'orcamento:adcionar_mao_de_obra_orcamento' object.id  %}">
+                                        <span class="badge bg-purple">{{ total_maos_de_obras.qt }}</span>
+                                        <i class="fas fa-users"></i> Mao de Obra
+                                    </button>
+                                    <a href="{% url 'orcamento:gerar_orcamento' object.id %}" class="btn btn-app bg-danger">
+                                        <span class="badge bg-teal">67</span>
+                                        <i class="fas fa-inbox"></i> Imprimir
+                                    </a>
+                                    <a class="btn btn-app bg-warning">
+                                        <span class="badge bg-info">12</span>
+                                        <i class="fas fa-envelope"></i> Inbox
+                                    </a>
+                                    <a class="btn btn-app bg-info">
+                                        <span class="badge bg-danger">531</span>
+                                        <i class="fas fa-heart"></i> Likes
+                                    </a>
+                                </div>
+
+                            </div>
+                            <!-- /.card -->
+                        </div>
+                    </div>
+                    <!-- /.col -->
+                </div>
+
+                <div class="row">
+                    <div class="col-6">
+                        <div class="card card-yellow card-outline">
+                            <div class="card-header">
+                                <h3 class="card-title">Equipamentos</h3>
+                            </div>
+                            <!-- ./card-header -->
+                            <div class="card-body">
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Produto</th>
+                                        <th>Quantidade</th>
+                                        <th>Preço</th>
+                                        <th>Total</th>
+
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for item in object.produto_orcamento.all %}
+                                        <tr data-widget="expandable-table" aria-expanded="false">
+                                            <td>{{ item.id }}</td>
+                                            <td>{{ item.produto }}</td>
+                                            <td>{{ item.quantidade }}</td>
+                                            <td>{{ item.preco }}</td>
+                                            <td>{{ item.total }}</td>
+                                        </tr>
+                                        <tr class="expandable-body">
+                                            <td colspan="5">
+                                                <p>
+                                                    Colocar relação de compra e vendas so para adim
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                    <div class="col-6">
+                        <div class="card card-yellow card-outline">
+                            <div class="card-header">
+                                <h3 class="card-title">Mão de Obra</h3>
+                            </div>
+                            <!-- ./card-header -->
+                            <div class="card-body">
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Produto</th>
+                                        <th>Quantidade</th>
+                                        <th>Preço</th>
+                                        <th>Total</th>
+
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for item_mao in object.mao_obra_orcamento.all %}
+                                        <tr data-widget="expandable-table" aria-expanded="false">
+                                            <td>{{ item_mao.id }}</td>
+                                            <td>{{ item_mao.mao_de_obra }}</td>
+                                            <td>{{ item_mao.quantidade }}</td>
+                                            <td>{{ item_mao.preco }}</td>
+                                            <td>{{ item_mao.total }}</td>
+                                        </tr>
+                                        <tr class="expandable-body">
+                                            <td colspan="5">
+                                                <p>
+                                                    Colocar relação de compra e vendas so para adim
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                </div>
+            </div>
+            <!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+
+    </div>
+{% endblock content %}
+
+{% block js %}
+    <script src="{% static 'core/plugins/jquery/jquery.min.js' %}"></script>
+    {% include 'core/includes/base_js_sem_jquery.html' %}
+    <script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>
+    <!-- You can alternatively load the minified version -->
+    <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+    <script src="{% static 'core/plugins/select2/js/select2.full.min.js' %}"></script>
+
+
+
+
+    <script>
+        $(function () {
+            $('.select2').select2()
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            })
+        })
+
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            function readBookModalForm() {
+                $("#add-produto").each(function () {
+                    $(this).modalForm({formURL: $(this).data("form-url")});
+                });
+            }
+            readBookModalForm();
+
+            function itemMaoDeObraModalForm() {
+                $("#add-mao-de-obra").each(function () {
+                    $(this).modalForm({formURL: $(this).data("form-url")});
+                });
+            }
+            itemMaoDeObraModalForm();
+
+        });
+    </script>
+{% endblock js %}

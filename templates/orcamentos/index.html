@@ -1,0 +1,78 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+    <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Simple Tables</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Simple Tables</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Orçamentos</h3>
+              </div>
+              <!-- ./card-header -->
+              <div class="card-body">
+                <table class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th>Orçamento</th>
+                      <th>Cliente</th>
+                      <th>Validade</th>
+                      <th>Status</th>
+                      <th>Data Da Cotação</th>
+
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {% for item in object_list %}
+                    <tr data-widget="expandable-table" aria-expanded="false">
+                      <td><a href="{% url 'orcamento:update_orcamento' item.id %}">{{ item.codigo }}</a> </td>
+                      <td>{{ item.cliente }}</td>
+                      <td>{{ item.validade }}</td>
+                      <td>{{ item.status }}</td>
+                      <td>{{ item.created }}</td>
+                    </tr>
+                    <tr class="expandable-body">
+                      <td colspan="5">
+                        <p>
+                          {{ item.descricao }}
+                        </p>
+                      </td>
+                    </tr>
+                  {% endfor %}
+
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+{% endblock content %}
+
+{% block js %}
+    {% include 'core/includes/base_js.html' %}
+{% endblock js %}

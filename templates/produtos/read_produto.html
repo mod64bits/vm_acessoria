@@ -1,0 +1,40 @@
+{% load widget_tweaks %}
+
+<div class="modal-header">
+    <h3 class="modal-title">{{ produto.nome|title }}</h3>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="modal-body">
+
+    <div class="">
+        Nome:
+        {{produto.nome }}
+    </div>
+    <div class="">
+        Categoria:
+        {{ produto.categoria }}
+    </div>
+    <div class="">
+        Fornecedor:
+        {{ produto.fornecedor }}
+
+    </div>
+     <div class="">
+        Proço de Compra:
+        {{ produto.preco_compra }}
+
+    </div>
+    <div class="">
+        Data de Cadastro:
+        {{ produto.created }}
+    </div>
+
+
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+</div>
