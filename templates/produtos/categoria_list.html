@@ -1,7 +1,8 @@
 {% extends 'core/base.html' %}
 {% load static %}
 
-{% block titulo_pagina %}Clientes{% endblock titulo_pagina %}
+
+{% block titulo_pagina %}Categorias{% endblock titulo_pagina %}
 
 {% block content %}
     <div class="modal fade" id="create-modal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -26,12 +27,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Clientes</h1>
+                        <h1>Categorias</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Clientes</li>
+                            <li class="breadcrumb-item active">Categorias</li>
                         </ol>
                     </div>
                 </div>
@@ -45,11 +46,11 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <button id="create-cliente" class="btn btn-primary" type="button" name="button">Novo Cliente</button>
+                                <button id="create-categoria" class="btn btn-primary" type="button" name="button">Nova Categoria</button>
                             </div>
                             <!-- ./card-header -->
                             <div class="card-body">
-                             {% include 'clientes/includes/_cliente_table.html' %}
+                             {% include 'produtos/includes/_categoria_table.html' %}
                             </div>
                             <!-- /.card-body -->
                         </div>
@@ -75,8 +76,8 @@
     <script type="text/javascript">
         $(document).ready(function() {
 
-            $("#create-cliente").modalForm({
-                formURL: "{% url 'clientes:novo_cliente' %}"
+            $("#create-categoria").modalForm({
+                formURL: "{% url 'produtos:nova_categoria' %}"
             });
 
             var asyncSuccessMessageUpdate = [
@@ -93,15 +94,15 @@
             "<\/script>"
           ].join("");
 
-            function updateBookModalForm() {
-            $(".update-book").each(function () {
+            function updateCategoriaModalForm() {
+            $(".update-categoria").each(function () {
               $(this).modalForm({
                 formURL: $(this).data("form-url"),
                 asyncUpdate: false,
                 asyncSettings: {
                   closeOnSubmit: false,
                   successMessage: asyncSuccessMessageUpdate,
-                  dataUrl: "clientes/",
+                  dataUrl: "categoria/",
                   dataElementId: "#books-table",
                   dataKey: "table",
                   addModalFormFunction: reinstantiateModalForms
@@ -109,27 +110,20 @@
               });
             });
           }
-          updateBookModalForm();
+          updateCategoriaModalForm();
 
         function reinstantiateModalForms() {
 
-        updateBookModalForm();
+        updateCategoriaModalForm();
 
       }
 
-       function deleteBookModalForm() {
-            $(".delete-book").each(function () {
+       function deleteCategoriaForm() {
+            $(".delete-categoria").each(function () {
                 $(this).modalForm({formURL: $(this).data("form-url"), isDeleteForm: true});
             });
           }
-          deleteBookModalForm();
-
-        function readBookModalForm() {
-            $(".read-book").each(function () {
-                $(this).modalForm({formURL: $(this).data("form-url")});
-            });
-          }
-          readBookModalForm();
+          deleteCategoriaForm();
 
         });
     </script>

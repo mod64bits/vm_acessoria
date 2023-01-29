@@ -64,8 +64,8 @@
               </li>
             </ul>
           </li>
-            <li class="nav-item {% if menu_open_fornecedores %}menu-open{% endif %}">
-            <a href="#" class="nav-link {% if active_fornecedores %}active{% endif %} ">
+            <li class="nav-item {% if menu_open_produto %}menu-open{% endif %}">
+            <a href="#" class="nav-link {% if menu_open_produto %}active{% endif %}">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Produtos
@@ -74,13 +74,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{% url 'produtos:lista_fornecedor' %}" class="nav-link active">
+                <a href="{% url 'produtos:lista_fornecedor' %}" class="nav-link {% if active_fornecedores %}active{% endif %}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Fornecedores</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="./index2.html" class="nav-link">
+                <a href="{% url 'produtos:lista_categorias' %}" class="nav-link {% if active_produto_categoria %}active{% endif %}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Categorias</p>
                 </a>
