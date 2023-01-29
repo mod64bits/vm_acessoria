@@ -86,7 +86,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="./index3.html" class="nav-link">
+                <a href="{% url 'produtos:lista_produto' %}" class="nav-link {% if active_produto %}active{% endif %}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Produtos</p>
                 </a>

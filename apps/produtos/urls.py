@@ -1,12 +1,18 @@
 from django.urls import path
 
 from .views import (FornecedorCreateView, FornecedorListView, FornecedorUpdateView, FornecedorDeleteView,
-                    CategoriaCreateView, CategoriasListView, CategoriaUpdateView, CategoriaDeleteView
+                    CategoriaCreateView, CategoriasListView, CategoriaUpdateView, CategoriaDeleteView,
+                    ProdutoListView, ProdutoCreateView, ProdutoUpdateView, ProdutoDeleteView, ProdutoReadView
                     )
 
 app_name = 'produtos'
 
 urlpatterns = [
+    path('', ProdutoListView.as_view(), name='lista_produto'),
+    path('novo/', ProdutoCreateView.as_view(), name='novo_produto'),
+    path('editar/<int:pk>/', ProdutoUpdateView.as_view(), name='atualizar_produto'),
+    path('read/<int:pk>', ProdutoReadView.as_view(), name='read_produto'),
+    path('delete/<int:pk>/', ProdutoDeleteView.as_view(), name='delete_produto'),
 
     path('fornecedor/', FornecedorListView.as_view(), name='lista_fornecedor'),
     path('fornecedor/novo/', FornecedorCreateView.as_view(), name='novo_fornecedor'),
