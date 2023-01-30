@@ -14,6 +14,7 @@ settings.ini
 passenger_wsgi.py
 # Distribution / packaging
 .Python
+uwsgi_params
 develop-eggs/
 downloads/
 eggs/
