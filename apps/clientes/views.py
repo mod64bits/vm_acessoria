@@ -1,6 +1,7 @@
 from django.urls import reverse_lazy
 from .forms import ClienteForm
 from django.views.generic.list import ListView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from .models import Cliente
@@ -12,24 +13,25 @@ from bootstrap_modal_forms.generic import (
 )
 
 
-class ClienteListView(ListView):
+class ClienteListView(LoginRequiredMixin, ListView):
     model = Cliente
     template_name = 'clientes/cliente_list.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context[' menu-open'] = True
+        context['menu_open_cliente'] = True
+        context['active_cliente'] = True
         return context
 
 
-class ClienteCreateView(BSModalCreateView):
+class ClienteCreateView(LoginRequiredMixin, BSModalCreateView):
     template_name = 'clientes/novo_cliente.html'
     form_class = ClienteForm
     success_message = 'Success: Book was created.'
     success_url = reverse_lazy('clientes:lista_clientes')
 
 
-class ClienteUpdateView(BSModalUpdateView):
+class ClienteUpdateView(LoginRequiredMixin, BSModalUpdateView):
     model = Cliente
     template_name = 'clientes/atualizar_cliente.html'
     form_class = ClienteForm
@@ -37,14 +39,14 @@ class ClienteUpdateView(BSModalUpdateView):
     success_url = reverse_lazy('clientes:lista_clientes')
 
 
-class ClienteDeleteView(BSModalDeleteView):
+class ClienteDeleteView(LoginRequiredMixin, BSModalDeleteView):
     model = Cliente
     template_name = 'clientes/delete_cliente.html'
     success_message = 'Success: Book was deleted.'
     success_url = reverse_lazy('clientes:lista_clientes')
 
 
-class ClienteReadView(BSModalReadView):
+class ClienteReadView(LoginRequiredMixin, BSModalReadView):
     model = Cliente
     template_name = 'clientes/read_cliente.html'
 
