@@ -2,6 +2,7 @@ import decimal
 import locale
 from decimal import Decimal
 from django.db.models import Sum
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView
@@ -14,7 +15,7 @@ from .forms import OrcamentoUpdateForm
 from apps.core.ultils import GeradorKeys
 
 
-class GerarOrcamentoView(DetailView):
+class GerarOrcamentoView(LoginRequiredMixin, DetailView):
     model = Orcamento
     template_name = 'orcamentos/orcamento.html'
 
@@ -101,13 +102,19 @@ class ImprimirOrcamento(GerarOrcamentoView):
     template_name = 'orcamentos/orcamento_impressao.html'
 
 
-class OrcamentosView(ListView):
+class OrcamentosView(LoginRequiredMixin, ListView):
     model = Orcamento
     paginate_by = 100
     template_name = 'orcamentos/index.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['menu_open_orcamento'] = True
+        context['active_orcamento'] = True
+        return context
 
-class NovoOrcamento(CreateView):
+
+class NovoOrcamento(LoginRequiredMixin, CreateView):
     form_class = OrcamentoUpdateForm
     template_name = 'orcamentos/orcamento_form.html'
 
@@ -116,7 +123,7 @@ class NovoOrcamento(CreateView):
         return super(NovoOrcamento, self).form_valid(form)
 
 
-class OrcamentoUpdate(UpdateView):
+class OrcamentoUpdate(LoginRequiredMixin, UpdateView):
     model = Orcamento
     form_class = OrcamentoUpdateForm
     template_name_suffix = '_update_form'
@@ -200,7 +207,7 @@ class OrcamentoUpdate(UpdateView):
         return context
 
 
-class AdcionarProdutoView(BSModalCreateView):
+class AdcionarProdutoView(LoginRequiredMixin, BSModalCreateView):
     template_name = 'orcamentos/adcionar_item.html'
     form_class = OrcamentoProdutoForm
     success_message = 'Success: Book was created.'
@@ -221,7 +228,7 @@ class AdcionarProdutoView(BSModalCreateView):
 
 # TODO: corrigir bug do modal com selec2 não recebe o cursor para digitar
 
-class AdiconarMaoDeObraView(BSModalCreateView):
+class AdiconarMaoDeObraView(LoginRequiredMixin, BSModalCreateView):
     template_name = 'orcamentos/adcionar_mao_de_obra.html'
     form_class = OrcamentoMaoDeObraForm
     success_message = 'Mão de obra adcionado com sucesso!'

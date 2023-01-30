@@ -8,7 +8,6 @@ from dj_database_url import parse as db_url
 BASE_DIR = Path(__file__).resolve().parent.parent
 BASE_DIR_DECOPLE = Paths(__file__).parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -18,8 +17,7 @@ SECRET_KEY = 'django-insecure-_@d!&v%0o=az9v32^2ayn&29h7+1w-1pq#pqggzsh%_9hh(-mx
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
-
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=lambda v: [s.strip() for s in v.split(',')])
 
 # Application definition
 
@@ -78,7 +76,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'vm_acessoria.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
@@ -89,7 +86,6 @@ DATABASES = {
         cast=db_url
     )
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -109,7 +105,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
@@ -127,7 +122,6 @@ USE_TZ = False
 USE_L10N = True
 THOUSAND_SEPARATOR = '.',
 USE_THOUSAND_SEPARATOR = True
-
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
@@ -150,3 +144,4 @@ AUTHENTICATION_BACKENDS = (
     'apps.users.backends.ModelBackend',
 )
 
+LOGIN_REDIRECT_URL = '/'
