@@ -132,6 +132,9 @@ if DEBUG is True:
     STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static")
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 else:
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, "vm_acessoria/static"),
+    ]
     STATIC_ROOT = '/home/ubuntu/vm_acessoria/static/'
     MEDIA_ROOT = '/home/ubuntu/vm_acessoria/media/'
 
