@@ -127,13 +127,13 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
-if DEBUG:
+print(DEBUG)
+if DEBUG is True:
     STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static")
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 else:
     STATIC_ROOT = '/home/ubuntu/vm_acessoria/static/'
     MEDIA_ROOT = '/home/ubuntu/vm_acessoria/media/'
-
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
