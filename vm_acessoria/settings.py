@@ -15,7 +15,7 @@ BASE_DIR_DECOPLE = Paths(__file__).parent
 SECRET_KEY = 'django-insecure-_@d!&v%0o=az9v32^2ayn&29h7+1w-1pq#pqggzsh%_9hh(-mx'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=lambda v: [s.strip() for s in v.split(',')])
 
@@ -127,9 +127,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
-STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static")
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "vm_acessoria/static")
+MEDIA_ROOT = os.path.join(BASE_DIR, "vm_acessoria/media")
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
