@@ -127,8 +127,12 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
-STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "vm_acessoria/static")
-MEDIA_ROOT = os.path.join(BASE_DIR, "vm_acessoria/media")
+if DEBUG:
+    STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static")
+    MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+else:
+    STATIC_ROOT = '/home/ubuntu/vm_acessoria/static/'
+    MEDIA_ROOT = '/home/ubuntu/vm_acessoria/media/'
 
 
 # Default primary key field type
