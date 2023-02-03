@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'bootstrap_modal_forms',
     'bootstrapform',
     'bootstrap_datepicker_plus',
+    'django_filters',
 
     'apps.users',
     'apps.core',

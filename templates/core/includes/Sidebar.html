@@ -61,8 +61,8 @@
                 </li>
             </ul>
         </li>
-        <li class="nav-item">
-            <a href="#" class="nav-link">
+        <li class="nav-item {% if menu_open_cliente %}menu-open{% endif %}">
+            <a href="#" class="nav-link {% if menu_open_cliente %}active{% endif %}">
                 <i class="nav-icon fas fa-chart-pie"></i>
                 <p>
                     Clientes
@@ -70,28 +70,10 @@
                 </p>
             </a>
             <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="pages/charts/chartjs.html" class="nav-link">
+                <li class="nav-item ">
+                    <a href="{% url 'clientes:lista_clientes' %}" class="nav-link {% if active_cliente %}active{% endif %}">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>ChartJS</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="pages/charts/flot.html" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Flot</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="pages/charts/inline.html" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Inline</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="pages/charts/uplot.html" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>uPlot</p>
+                        <p>Clientes</p>
                     </a>
                 </li>
             </ul>

@@ -19,3 +19,4 @@ typing_extensions==4.4.0
 Unipath==1.1
 
 django~=4.1
+django-filter~=22.1
