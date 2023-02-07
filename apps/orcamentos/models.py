@@ -61,6 +61,7 @@ class Orcamento(models.Model):
 
 
 class ItemMaoDeObra(models.Model):
+    execurcao_parceiro = models.BooleanField('Execultado Por Parceiro', default=False)
     orcamento = models.ForeignKey(
         Orcamento,
         on_delete=models.CASCADE,

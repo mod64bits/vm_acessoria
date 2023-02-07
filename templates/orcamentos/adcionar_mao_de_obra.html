@@ -12,6 +12,12 @@
     <div class="modal-body">
         <div class="col-md-12">
             <div class="form-group">
+                {% render_field form.execurcao_parceiro class="form-check-input" type="checkbox" style="width: 100%;"%}
+                <label for="{{ form.execurcao_parceiro.id }}">{{ form.execurcao_parceiro.label }}</label>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
 
                 <label for="{{ form.mao_de_obra.id }}">{{ form.mao_de_obra.label }}</label>
                 {% render_field form.mao_de_obra class="form-control select2bs4" type="text" style="width: 100%;"%}
