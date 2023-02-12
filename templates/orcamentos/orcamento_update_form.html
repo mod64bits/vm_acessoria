@@ -131,7 +131,7 @@
                                                 <form method="post">
                                                     {% csrf_token %}
                                                     {{ form.media }}
-                                                     <div class="row">
+                                                    <div class="row">
                                                         <div class="col-md-12">
                                                             <div class="form-group">
 
@@ -218,6 +218,7 @@
                                         <span class="badge bg-purple">{{ total_maos_de_obras.qt }}</span>
                                         <i class="fas fa-users"></i> Mao de Obra
                                     </button>
+
                                     <a href="{% url 'orcamento:gerar_orcamento' object.id %}" class="btn btn-app bg-danger">
                                         <span class="badge bg-teal">67</span>
                                         <i class="fas fa-inbox"></i> Imprimir
@@ -240,50 +241,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-6">
-                        <div class="card card-yellow card-outline">
-                            <div class="card-header">
-                                <h3 class="card-title">Equipamentos</h3>
-                            </div>
-                            <!-- ./card-header -->
-                            <div class="card-body">
-                                <table class="table table-bordered table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Produto</th>
-                                        <th>Quantidade</th>
-                                        <th>Preço</th>
-                                        <th>Total</th>
-
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for item in object.produto_orcamento.all %}
-                                        <tr data-widget="expandable-table" aria-expanded="false">
-                                            <td>{{ item.id }}</td>
-                                            <td>{{ item.produto }}</td>
-                                            <td>{{ item.quantidade }}</td>
-                                            <td>{{ item.preco }}</td>
-                                            <td>{{ item.total }}</td>
-                                        </tr>
-                                        <tr class="expandable-body">
-                                            <td colspan="5">
-                                                <p>
-                                                    Colocar relação de compra e vendas so para adim
-                                                </p>
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-
-                                    </tbody>
-                                </table>
-                            </div>
-                            <!-- /.card-body -->
-                        </div>
-                        <!-- /.card -->
-                    </div>
-                    <div class="col-6">
+                    <div class="col-12">
                         <div class="card card-yellow card-outline">
                             <div class="card-header">
                                 <h3 class="card-title">Mão de Obra</h3>
@@ -326,6 +284,62 @@
                         </div>
                         <!-- /.card -->
                     </div>
+                    <div class="col-12">
+                        <div class="card card-yellow card-outline">
+                            <div class="card-header">
+                                <h3 class="card-title">Equipamentos</h3>
+                            </div>
+                            <!-- ./card-header -->
+                            <div class="card-body">
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Produto</th>
+                                        <th>Quantidade</th>
+                                        <th>Preço</th>
+                                        <th>Total</th>
+
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for item in object.produto_orcamento.all %}
+                                        <tr data-widget="expandable-table" aria-expanded="false">
+                                            <td>{{ item.id }}</td>
+                                            <td>{{ item.produto }}</td>
+                                            <td>{{ item.quantidade }}</td>
+                                            <td>{{ item.preco }}</td>
+                                            <td>{{ item.total }}</td>
+
+                                            <td>
+
+                                                <button type="button" class="update-produto btn btn-sm btn-primary" data-form-url="{% url 'orcamento:editar_produto_orcamento' item.pk %}">
+                                                    <span class="fas fa-pencil-alt"></span>
+                                                </button>
+                                                <button type="button" class="delete-produto btn btn-sm btn-danger" data-form-url="{% url 'orcamento:deletar_produto_orcamento' item.pk %}">
+                                                    <span class="fa fa-trash"></span>
+                                                </button>
+
+                                            </td>
+
+                                        </tr>
+                                        <tr class="expandable-body">
+                                            <td colspan="5">
+                                                <p>
+                                                    Colocar relação de compra e vendas so para adim
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+
                 </div>
             </div>
             <!-- /.container-fluid -->
@@ -374,6 +388,52 @@
                 });
             }
             itemMaoDeObraModalForm();
+
+
+            var asyncSuccessMessageUpdate = [
+                "<div ",
+                "style='position:fixed;top:0;z-index:10000;width:100%;border-radius:0;' ",
+                "class='alert alert-icon alert-success alert-dismissible fade show mb-0' role='alert'>",
+                "Success: Book was updated.",
+                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>",
+                "<span aria-hidden='true'>&times;</span>",
+                "</button>",
+                "</div>",
+                "<script>",
+                "$('.alert').fadeTo(2000, 500).slideUp(500, function () {$('.alert').slideUp(500).remove();});",
+                "<\/script>"
+            ].join("");
+
+            function updateProdutoModalForm() {
+                $(".update-produto").each(function () {
+                    $(this).modalForm({
+                        formURL: $(this).data("form-url"),
+                        asyncUpdate: false,
+                        asyncSettings: {
+                            closeOnSubmit: false,
+                            successMessage: asyncSuccessMessageUpdate,
+                            dataUrl: "produto/",
+                            dataElementId: "#books-table",
+                            dataKey: "table",
+                            addModalFormFunction: reinstantiateModalForms
+                        }
+                    });
+                });
+            }
+            updateProdutoModalForm();
+
+            function reinstantiateModalForms() {
+
+                updateProdutoModalForm();
+
+            }
+
+            function deleteProdutoForm() {
+                $(".delete-produto").each(function () {
+                    $(this).modalForm({formURL: $(this).data("form-url"), isDeleteForm: true});
+                });
+            }
+            deleteProdutoForm();
 
         });
     </script>

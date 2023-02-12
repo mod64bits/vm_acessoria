@@ -10,11 +10,11 @@ from apps.produtos import urls as produtos_urls
 from apps.home import urls as home_urls
 
 urlpatterns = [
-    path('', include(home_urls)),
+    path('home/', include(home_urls)),
     path('orcamentos/', include(orcamentos_urls)),
     path('clientes/', include(cliente_urls)),
     path('produtos/', include(produtos_urls)),
-    path('dashboard/', include(dashboard_urls)),
+    path('', include(dashboard_urls)),
     path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
