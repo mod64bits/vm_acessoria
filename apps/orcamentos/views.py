@@ -1,4 +1,6 @@
 import decimal
+from django.urls import reverse_lazy
+from django.urls import reverse
 import locale
 from decimal import Decimal
 from django.db.models import Sum
@@ -8,7 +10,7 @@ from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView
 from django.views.generic.detail import DetailView
 from .forms import OrcamentoProdutoForm, OrcamentoMaoDeObraForm
-from bootstrap_modal_forms.generic import BSModalCreateView
+from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView, BSModalDeleteView
 from .models import Orcamento, ItemProduto, ItemMaoDeObra
 from .forms import OrcamentoUpdateForm
 
@@ -110,3 +112,45 @@ class AdiconarMaoDeObraView(LoginRequiredMixin, BSModalCreateView):
         form.instance.total = decimal.Decimal(form.instance.preco * form.instance.quantidade)
 
         return super(AdiconarMaoDeObraView, self).form_valid(form)
+
+
+class EditarItemProdutoView(BSModalUpdateView):
+    model = ItemProduto
+    template_name = 'orcamentos/editar_item_produto.html'
+    form_class = OrcamentoProdutoForm
+
+    def form_valid(self, form):
+        orcamento = Orcamento.objects.get(id=self.kwargs['pk'])
+        qt = form.instance.quantidade
+        if ItemProduto.objects.filter(produto_id=form.instance.produto.id, orcamento_id=self.kwargs['pk']).exists():
+            produto = ItemProduto.objects.get(produto_id=form.instance.produto.id, orcamento_id=self.kwargs['pk'])
+
+        form.instance.orcamento = orcamento
+
+        form.instance.total = decimal.Decimal(form.instance.preco * form.instance.quantidade)
+
+        produto.orcamento = form.instance.orcamento
+        produto.produto = form.instance.produto
+        produto.preco = form.instance.preco
+        produto.total = form.instance.total
+        produto.quantidade = form.instance.quantidade
+        produto.save()
+
+        # TODO Voltar nessa Funcionalidade
+
+        return super(EditarItemProdutoView, self).form_valid(form)
+
+
+class ItemProdutoDeleteView(LoginRequiredMixin, BSModalDeleteView):
+    model = ItemProduto
+    template_name = 'orcamentos/delete_item_produto.html'
+    success_message = 'Success: Categoria excluída com sucesso.'
+
+    def get_success_url(self):
+        orcamento = self.get_object()
+        return reverse('orcamento:update_orcamento', kwargs={'pk': orcamento.orcamento.id})
+
+
+
+
+
