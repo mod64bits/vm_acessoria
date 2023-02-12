@@ -47,3 +47,8 @@ class Sobre(models.Model):
     def __str__(self):
         return self.titulo
 
+
+class Marcas(models.Model):
+    nome = models.CharField('Nome', max_length=20)
+    logo = models.ImageField('Logo', upload_to='parceiros/logos/')
+

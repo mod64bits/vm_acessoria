@@ -12,7 +12,7 @@ def quebra_de_linha(texto):
 
     for item in text:
         temp = item.rstrip('\n')
-        saida += f"<p>{temp}.</p><br>"
+        saida += f"{temp}.<br>"
     return saida
 
 
