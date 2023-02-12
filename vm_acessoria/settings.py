@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'bootstrapform',
     'bootstrap_datepicker_plus',
     'django_filters',
+    'django_jsonform',
 
     'apps.users',
     'apps.core',
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
     'apps.empresas',
     'apps.orcamentos',
     'apps.dashboard',
+    'apps.home',
 ]
 
 MIDDLEWARE = [
