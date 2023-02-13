@@ -74,6 +74,7 @@ class ItemMaoDeObra(models.Model):
         verbose_name='Mão de Obra',
         related_name='item_mao_obra'
     )
+    descricao = models.TextField('Descrição', null=True, blank=True)
     preco = models.DecimalField('Preço', decimal_places=2, max_digits=8)
     total = models.DecimalField('Total', decimal_places=2, max_digits=8, null=True, blank=True)
     quantidade = models.PositiveIntegerField('Quantidade', default=1)

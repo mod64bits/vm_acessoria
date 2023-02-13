@@ -120,24 +120,7 @@ class EditarItemProdutoView(BSModalUpdateView):
     form_class = OrcamentoProdutoForm
 
     def form_valid(self, form):
-        orcamento = Orcamento.objects.get(id=self.kwargs['pk'])
-        qt = form.instance.quantidade
-        if ItemProduto.objects.filter(produto_id=form.instance.produto.id, orcamento_id=self.kwargs['pk']).exists():
-            produto = ItemProduto.objects.get(produto_id=form.instance.produto.id, orcamento_id=self.kwargs['pk'])
-
-        form.instance.orcamento = orcamento
-
         form.instance.total = decimal.Decimal(form.instance.preco * form.instance.quantidade)
-
-        produto.orcamento = form.instance.orcamento
-        produto.produto = form.instance.produto
-        produto.preco = form.instance.preco
-        produto.total = form.instance.total
-        produto.quantidade = form.instance.quantidade
-        produto.save()
-
-        # TODO Voltar nessa Funcionalidade
-
         return super(EditarItemProdutoView, self).form_valid(form)
 
 
@@ -151,6 +134,4 @@ class ItemProdutoDeleteView(LoginRequiredMixin, BSModalDeleteView):
         return reverse('orcamento:update_orcamento', kwargs={'pk': orcamento.orcamento.id})
 
 
-
-
-
+    # TODO Adcionar edição de item mão de obra
