@@ -30,25 +30,34 @@ class ValoresOrcamento:
         context = {}
         total_lucro = Decimal(0)
         maoes_de_obras = ItemMaoDeObra.objects.filter(orcamento_id=self._orcamento)
-        for item in maoes_de_obras:
-            if not item.execurcao_parceiro:
-                total_lucro += item.preco * item.quantidade
-            else:
-                total_lucro += (item.preco - item.mao_de_obra) * item.quantidade
-        total = maoes_de_obras.aggregate(Sum('total'))
-        context['total_lucro'] = total_lucro
-        context['total'] = total['total__sum']
+        if maoes_de_obras:
+            for item in maoes_de_obras:
+                if not item.execurcao_parceiro:
+                    total_lucro += item.preco * item.quantidade
+                else:
+                    total_lucro += (item.preco - item.mao_de_obra) * item.quantidade
+            total = maoes_de_obras.aggregate(Sum('total'))
+            context['total_lucro'] = total_lucro
+            context['total'] = total['total__sum']
+        else:
+            context['total_lucro'] = Decimal(0)
+            context['total'] = Decimal(0)
         return context
 
     def total_produtos(self):
         context = {}
         total_lucro = Decimal(0)
         produtos = ItemProduto.objects.filter(orcamento_id=self._orcamento)
-        for produto in produtos:
-            total_lucro += (produto.preco * produto.quantidade) - (produto.produto.preco_compra * produto.quantidade)
-        total = produtos.aggregate(Sum('total'))
-        context['total_lucro'] = total_lucro
-        context['total'] = total['total__sum']
+        if produtos:
+            for produto in produtos:
+                total_lucro += (produto.preco * produto.quantidade) - (
+                            produto.produto.preco_compra * produto.quantidade)
+            total = produtos.aggregate(Sum('total'))
+            context['total_lucro'] = total_lucro
+            context['total'] = total['total__sum']
+        else:
+            context['total_lucro'] = Decimal(0)
+            context['total'] = Decimal(0)
         return context
 
     def quabtidade_produtos(self):

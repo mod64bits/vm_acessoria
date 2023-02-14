@@ -31,6 +31,9 @@ class Produto(Base):
     )
     preco_compra = models.DecimalField('Preço de Compra', decimal_places=2, max_digits=8)
 
+    def __str__(self):
+        return f"{self.nome}--R$:{self.preco_compra}"
+
     class Meta:
         verbose_name = 'Produto'
         verbose_name_plural = 'Produtos'

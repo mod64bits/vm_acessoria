@@ -1,19 +1,19 @@
 import string
 import random
-from datetime import date
+from datetime import datetime as data_key
 import datetime
 
 
 class GeradorKeys:
-    def __init__(self):
-        self.escolhas_possiveis = string.ascii_letters + string.digits
-        self.data = date.today()
+    def __init__(self, user_id, cliente_id):
+        self.user_id = user_id
+        self.cliente_id = cliente_id
+        self.data = data_key.now()
 
     def __key_ano_gerador(self):
-        resultado = f"{self.data.strftime('%Y-%m')}-"
-        for _ in range(5):
-            resultado += random.choice(self.escolhas_possiveis)
-        return resultado
+        key = f"{self.data.strftime('%m%d%Y%H%M%S')}#{self.user_id}-{self.cliente_id}"
+
+        return key
 
     def key(self):
         return self.__key_ano_gerador()
