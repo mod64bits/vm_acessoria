@@ -54,7 +54,8 @@ class NovoOrcamento(LoginRequiredMixin, CreateView):
     template_name = 'orcamentos/orcamento_form.html'
 
     def form_valid(self, form):
-        form.instance.codigo = GeradorKeys().key()
+        key_orcamento = GeradorKeys(user_id=self.request.user.id, cliente_id=form.instance.cliente.id)
+        form.instance.codigo = key_orcamento.key()
         return super(NovoOrcamento, self).form_valid(form)
 
 
@@ -82,8 +83,8 @@ class AdcionarProdutoView(LoginRequiredMixin, BSModalCreateView):
     def form_valid(self, form):
         orcamento = Orcamento.objects.get(id=self.kwargs['pk'])
         qt = form.instance.quantidade
-        if ItemProduto.objects.filter(produto_id=form.instance.produto.id, orcamento_id=self.kwargs['pk']).exists():
-            produto = ItemProduto.objects.get(produto_id=form.instance.produto.id, orcamento_id=self.kwargs['pk'])
+        if ItemProduto.objects.filter(produto_id=form.instance.produto.id, orcamento=orcamento).exists():
+            produto = ItemProduto.objects.get(produto_id=form.instance.produto.id, orcamento=orcamento)
             form.instance = produto
             form.instance.quantidade += qt
         form.instance.orcamento = orcamento
@@ -103,13 +104,15 @@ class AdiconarMaoDeObraView(LoginRequiredMixin, BSModalCreateView):
         qt = form.instance.quantidade
         if ItemMaoDeObra.objects.filter(mao_de_obra_id=form.instance.mao_de_obra.id,
                                         orcamento_id=self.kwargs['pk']).exists():
-            mao_obra = ItemMaoDeObra.objects.get(mao_de_obra_id=form.instance.produto.id,
+            mao_obra = ItemMaoDeObra.objects.get(mao_de_obra_id=form.instance.mao_de_obra_id,
                                                  orcamento_id=self.kwargs['pk'])
             form.instance = mao_obra
             form.instance.quantidade += qt
-        form.instance.orcamento = orcamento
+        else:
+            form.instance.orcamento = orcamento
+            form.instance.id = None
 
-        form.instance.total = decimal.Decimal(form.instance.preco * form.instance.quantidade)
+            form.instance.total = decimal.Decimal(form.instance.preco * form.instance.quantidade)
 
         return super(AdiconarMaoDeObraView, self).form_valid(form)
 
