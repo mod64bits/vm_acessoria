@@ -1,4 +1,4 @@
-# VM Acessoria
+# VM Assessoria
 
 Sistema Simples de Orçamento
 
