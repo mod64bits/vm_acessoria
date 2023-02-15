@@ -1,4 +1,4 @@
-# VM Acessoria
+# VM Assessoria
 
 Sistema Simples de Orçamento
 
@@ -8,6 +8,8 @@ Sistema Simples de Orçamento
 - Cadastro de Equipamentos
 - Cadastro de Mão de Obra
 - Orçamento 
+- Orçamnetos com Preços Difiretntes
+- Multe Empresas para gerar orçamento com CNPJ diferente
 
 ## 💻 Projeto
 Projeto para empresa gsa portaria
@@ -37,9 +39,7 @@ Para Mais Informações acesse:
 > - Cadastro de Equipamentos para Venda [X]
 > - Cadastro de Mão de Obra [X]
 > - Cadastro de Cliente[X]
-> - Cadastro de Empresas [ ]
-> - Contação de Equipamentos [ ]
-> - Cotação de Mão de Obra [ ]
+> - Cadastro de Empresas [X]
 > - Geração de PDF [ ]
 > - Envio Por Email [ ]
 > - ### Orçamentos
@@ -48,3 +48,11 @@ Para Mais Informações acesse:
 > - Total equipamentos [X]
 > - Total mao de obra[X]
 > - Total de lucro [X]
+
+# Features em desenvolvimento
+Modelo de orçamentos diferentes para quando precisar enviar mais de um com preços
+diferentes para aprovação.
+> - Templates Diferentes [ ]
+> - Valores conforme a porcentagem cadastrada [ ]
+> - Gerar PDF [ ]
+> - Enviar Por Email [ ]
