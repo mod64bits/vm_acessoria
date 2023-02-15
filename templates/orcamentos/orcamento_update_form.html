@@ -103,10 +103,10 @@
                                         <a class="nav-link active" id="custom-tabs-one-home-tab" data-toggle="pill" href="#custom-tabs-one-home" role="tab" aria-controls="custom-tabs-one-home" aria-selected="true">Cliente</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" id="custom-tabs-one-profile-tab" data-toggle="pill" href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false">Empresa</a>
+                                        <a class="nav-link" id="custom-tabs-one-profile-tab" data-toggle="pill" href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false">Produtos/Lucro</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" id="custom-tabs-one-messages-tab" data-toggle="pill" href="#custom-tabs-one-messages" role="tab" aria-controls="custom-tabs-one-messages" aria-selected="false">Analise</a>
+                                        <a class="nav-link" id="custom-tabs-one-messages-tab" data-toggle="pill" href="#custom-tabs-one-messages" role="tab" aria-controls="custom-tabs-one-messages" aria-selected="false">Serviços/Lucro</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" id="custom-tabs-one-settings-tab" data-toggle="pill" href="#custom-tabs-one-settings" role="tab" aria-controls="custom-tabs-one-settings" aria-selected="false">Settings</a>
@@ -215,11 +215,11 @@
                             <div class="card-body pad table-responsive">
                                 <div class="card-body">
                                     <button id="add-produto" class="btn btn-app bg-secondary" type="button" name="button" data-form-url="{% url 'orcamento:adcionar_produto_orcamento' object.id  %}">
-                                        <span class="badge bg-success">{{ total_produtos.qt }}</span>
+                                        <span class="badge bg-success">{{ qt_produtos }}</span>
                                         <i class="fas fa-barcode"></i> Produtos
                                     </button>
                                     <button class="btn btn-app bg-success" id="add-mao-de-obra" type="button" name="mao" data-form-url="{% url 'orcamento:adcionar_mao_de_obra_orcamento' object.id  %}">
-                                        <span class="badge bg-purple">{{ total_maos_de_obras.qt }}</span>
+                                        <span class="badge bg-purple">{{ qt_mao_de_obra }}</span>
                                         <i class="fas fa-users"></i> Mao de Obra
                                     </button>
 
@@ -315,23 +315,16 @@
                                             <td>{{ item.quantidade }}</td>
                                             <td>{{ item.preco }}</td>
                                             <td>{{ item.total }}</td>
-
                                             <td>
-
                                                 <button type="button" class="update-produto btn btn-sm btn-primary" data-form-url="{% url 'orcamento:editar_produto_orcamento' item.pk %}">
                                                     <span class="fas fa-pencil-alt"></span>
                                                 </button>
                                                 <button type="button" class="delete-produto btn btn-sm btn-danger" data-form-url="{% url 'orcamento:deletar_produto_orcamento' item.pk %}">
                                                     <span class="fa fa-trash"></span>
                                                 </button>
-
                                             </td>
-
                                         </tr>
-
                                     {% endfor %}
-
-
                                     </tbody>
                                     <tfoot>
                                     <tr>

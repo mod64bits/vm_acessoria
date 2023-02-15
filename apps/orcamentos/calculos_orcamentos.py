@@ -64,5 +64,5 @@ class ValoresOrcamento:
         return ItemProduto.objects.filter(orcamento_id=self._orcamento.id).count()
 
     def quantidade_mao_de_obra(self):
-        return ItemProduto.objects.filter(orcamento_id=self._orcamento).count()
+        return ItemMaoDeObra.objects.filter(orcamento_id=self._orcamento).count()
 

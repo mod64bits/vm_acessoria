@@ -1,9 +1,5 @@
 import decimal
-from django.urls import reverse_lazy
 from django.urls import reverse
-import locale
-from decimal import Decimal
-from django.db.models import Sum
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
@@ -17,6 +13,7 @@ from .forms import OrcamentoUpdateForm
 from apps.core.ultils import GeradorKeys
 
 from .calculos_orcamentos import ValoresOrcamento
+
 
 class GerarOrcamentoView(LoginRequiredMixin, DetailView):
     model = Orcamento
@@ -58,6 +55,13 @@ class NovoOrcamento(LoginRequiredMixin, CreateView):
         form.instance.codigo = key_orcamento.key()
         return super(NovoOrcamento, self).form_valid(form)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['menu_open_orcamento'] = True
+        context['active_orcamento_novo'] = True
+
+        return context
+
 
 class OrcamentoUpdate(LoginRequiredMixin, UpdateView):
     model = Orcamento
@@ -72,6 +76,10 @@ class OrcamentoUpdate(LoginRequiredMixin, UpdateView):
         context['total_maos_de_obras'] = valores.total_orcamento()['total_mao_de_obra']
         context['total_orcamento'] = valores.total_orcamento()['total_orcamento']
         context['total_lucro'] = valores.total_orcamento()['total_lucro']
+        context['qt_produtos'] = valores.quabtidade_produtos()
+        context['qt_mao_de_obra'] = valores.quantidade_mao_de_obra()
+        context['menu_open_orcamento'] = True
+
         return context
 
 
