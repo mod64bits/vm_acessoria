@@ -1,0 +1,33 @@
+<table id="books-table" class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Tipo</th>
+        <th>Descrição</th>
+        <th>Valor</th>
+        <th>Ação</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in object_list %}
+        <tr>
+            <td>{{ item.tipo_de_mao_de_obra }}</td>
+            <td>{{ item.descricao }}</td>
+            <td>{{ item.preco_compra }}</td>
+
+
+            <td>
+
+                <button type="button" class="update-categoria btn btn-sm btn-primary" data-form-url="% url 'maodeobra:lista_mao_obra' item.pk %}">
+                    <span class="fas fa-pencil-alt"></span>
+                </button>
+                <button type="button" class="delete-categoria btn btn-sm btn-danger" data-form-url="% url 'produtos:delete_categoria' item.pk %}">
+                    <span class="fa fa-trash"></span>
+                </button>
+            </td>
+        </tr>
+
+    {% endfor %}
+
+    </tbody>
+</table>
