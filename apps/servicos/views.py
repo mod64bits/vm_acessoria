@@ -38,6 +38,13 @@ class MaoDeObraUpdateView(LoginRequiredMixin, BSModalUpdateView):
     success_url = reverse_lazy('maodeobra:lista_mao_obra')
 
 
+class MaoDeObraDeleteView(LoginRequiredMixin, BSModalDeleteView):
+    model = MaoDeObra
+    template_name = 'servicos/delete_mao_de_obra.html'
+    success_message = 'Success: Fornecedor excluído com sucesso.'
+    success_url = reverse_lazy('maodeobra:lista_mao_obra')
+
+
 class TipoTipoDeMaoDeObraListView(LoginRequiredMixin, ListView):
     model = TipoDeMaoDeObra
     template_name = 'servicos/tipo_servico_list.html'

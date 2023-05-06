@@ -21,7 +21,7 @@
                 <button type="button" class="update-mao-de-obra btn btn-sm btn-primary" data-form-url="{% url 'maodeobra:atualizar_mao_de_obra' item.pk %}">
                     <span class="fas fa-pencil-alt"></span>
                 </button>
-                <button type="button" class="delete-categoria btn btn-sm btn-danger" data-form-url="% url 'produtos:delete_categoria' item.pk %}">
+                <button type="button" class="delete-categoria btn btn-sm btn-danger" data-form-url="{% url 'maodeobra:deletar_mao_de_obra' item.pk %}">
                     <span class="fa fa-trash"></span>
                 </button>
             </td>
