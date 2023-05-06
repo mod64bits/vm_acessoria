@@ -30,6 +30,14 @@ class MaoDeObraCreateView(LoginRequiredMixin, BSModalCreateView):
     success_url = reverse_lazy('maodeobra:lista_mao_obra')
 
 
+class MaoDeObraUpdateView(LoginRequiredMixin, BSModalUpdateView):
+    model = MaoDeObra
+    template_name = 'servicos/atualizar_mao_de_obra.html'
+    form_class = MaoDeObraForm
+    success_message = 'Success: Mao de Obra Atualizado.'
+    success_url = reverse_lazy('maodeobra:lista_mao_obra')
+
+
 class TipoTipoDeMaoDeObraListView(LoginRequiredMixin, ListView):
     model = TipoDeMaoDeObra
     template_name = 'servicos/tipo_servico_list.html'

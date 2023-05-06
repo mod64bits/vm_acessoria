@@ -96,8 +96,8 @@
             "<\/script>"
           ].join("");
 
-            function updateCategoriaModalForm() {
-            $(".update-categoria").each(function () {
+            function updateMaoDeObraModalForm() {
+            $(".update-mao-de-obra").each(function () {
               $(this).modalForm({
                 formURL: $(this).data("form-url"),
                 asyncUpdate: false,
@@ -112,11 +112,11 @@
               });
             });
           }
-          updateCategoriaModalForm();
+          updateMaoDeObraModalForm();
 
         function reinstantiateModalForms() {
 
-        updateCategoriaModalForm();
+        updateMaoDeObraModalForm();
 
       }
 
