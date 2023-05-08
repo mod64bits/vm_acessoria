@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'apps.orcamentos',
     'apps.dashboard',
     'apps.home',
+    'apps.propostas',
 ]
 
 MIDDLEWARE = [
