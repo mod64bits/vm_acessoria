@@ -1,17 +1,17 @@
 from django.contrib import admin
-from .models import TipoDeMaoDeObra, MaoDeObra
+from .models import CategoriaServico, Servico
 
 
-class TipoMaoDeObraAdmin(admin.ModelAdmin):
+class CategoriaServicoAdmin(admin.ModelAdmin):
     list_display = ['nome']
     search_fields = ['nome']
 
 
-class MaoDeObraAdmin(admin.ModelAdmin):
-    list_display = ['tipo_de_mao_de_obra', 'descricao', 'preco_compra', 'created', 'modified']
-    search_fields = ['tipo_de_mao_de_obra', 'tipo_de_mao_de_obra__nome']
+class ServicoAdmin(admin.ModelAdmin):
+    list_display = ['categoria_servico', 'descricao', 'preco_compra', 'created', 'modified']
+    search_fields = ['categoria_servico', 'tipo_de_mao_de_obra__nome']
     list_filter = ['created', 'modified']
 
 
-admin.site.register(TipoDeMaoDeObra, TipoMaoDeObraAdmin)
-admin.site.register(MaoDeObra, MaoDeObraAdmin)
+admin.site.register(CategoriaServico, CategoriaServicoAdmin)
+admin.site.register(Servico, ServicoAdmin)

@@ -1,8 +1,8 @@
 from django.urls import reverse_lazy
 from django.views.generic.list import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import MaoDeObra, TipoDeMaoDeObra
-from .forms import MaoDeObraForm, TipoDeMaoDeObraForm
+from .models import Servico, CategoriaServico
+from .forms import ServicoForm, CategoriaServicoForm
 
 from bootstrap_modal_forms.generic import (
     BSModalCreateView,
@@ -12,45 +12,69 @@ from bootstrap_modal_forms.generic import (
 )
 
 
-class MaoDeObraListView(LoginRequiredMixin, ListView):
-    model = MaoDeObra
+class ServicoListView(LoginRequiredMixin, ListView):
+    model = Servico
     template_name = 'servicos/servico_list.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['menu_open_mao_de_obra'] = True
-        context['active_mao_de_obra'] = True
+        context['active_menu_servico'] = True
+        context['open_menu_servico'] = True
+        context['active_servico'] = True
         return context
 
 
-class MaoDeObraCreateView(LoginRequiredMixin, BSModalCreateView):
-    template_name = 'servicos/nova_mao_de_obra.html'
-    form_class = MaoDeObraForm
-    success_message = 'Success: Mao de Obra Criado.'
-    success_url = reverse_lazy('maodeobra:lista_mao_obra')
+class ServicoCreateView(LoginRequiredMixin, BSModalCreateView):
+    template_name = 'servicos/novo_servico.html'
+    form_class = ServicoForm
+    success_message = 'Success:Servico Criado.'
+    success_url = reverse_lazy('servicos:lista_servicos')
 
 
-class MaoDeObraUpdateView(LoginRequiredMixin, BSModalUpdateView):
-    model = MaoDeObra
-    template_name = 'servicos/atualizar_mao_de_obra.html'
-    form_class = MaoDeObraForm
-    success_message = 'Success: Mao de Obra Atualizado.'
-    success_url = reverse_lazy('maodeobra:lista_mao_obra')
+class ServicoUpdateView(LoginRequiredMixin, BSModalUpdateView):
+    model = Servico
+    template_name = 'servicos/atualizar_servico.html'
+    form_class = ServicoForm
+    success_message = 'Success: Serviço Atualizado.'
+    success_url = reverse_lazy('servicos:lista_servicos')
 
 
-class MaoDeObraDeleteView(LoginRequiredMixin, BSModalDeleteView):
-    model = MaoDeObra
-    template_name = 'servicos/delete_mao_de_obra.html'
+class ServicoDeleteView(LoginRequiredMixin, BSModalDeleteView):
+    model = Servico
+    template_name = 'servicos/delete_servico.html'
     success_message = 'Success: Fornecedor excluído com sucesso.'
-    success_url = reverse_lazy('maodeobra:lista_mao_obra')
+    success_url = reverse_lazy('servicos:lista_servicos')
 
 
-class TipoTipoDeMaoDeObraListView(LoginRequiredMixin, ListView):
-    model = TipoDeMaoDeObra
-    template_name = 'servicos/tipo_servico_list.html'
+class CategoriaServicoListView(LoginRequiredMixin, ListView):
+    model = CategoriaServico
+    template_name = 'servicos/categoria_servico_list.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['menu_open_cliente'] = True
-        context['active_cliente'] = True
+        context['active_menu_servico'] = True
+        context['open_menu_servico'] = True
+        context['active_categoria_servico'] = True
         return context
+
+
+class CategoriaServicoCreateView(LoginRequiredMixin, BSModalCreateView):
+    template_name = 'servicos/nova_categoria_servico.html'
+    form_class = CategoriaServicoForm
+    success_message = 'Success: Tipo de Serviço Criado.'
+    success_url = reverse_lazy('servicos:lista_categoria_servico')
+
+
+class CategoriaServicoUpdateView(LoginRequiredMixin, BSModalUpdateView):
+    model = CategoriaServico
+    template_name = 'servicos/atualizar_categoria_servico.html'
+    form_class = CategoriaServicoForm
+    success_message = 'Success: Tipo Servico Atualizado.'
+    success_url = reverse_lazy('servicos:lista_categoria_servico')
+
+
+class CategoriaServicoDeleteView(LoginRequiredMixin, BSModalDeleteView):
+    model = CategoriaServico
+    template_name = 'servicos/delete_categoria_servico.html'
+    success_message = 'Success: Tipo de servico excluído com sucesso.'
+    success_url = reverse_lazy('servicos:lista_categoria_servico')

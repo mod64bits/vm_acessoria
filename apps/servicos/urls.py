@@ -1,21 +1,29 @@
 from django.urls import path
 from .views import (
-    MaoDeObraListView,
-    MaoDeObraCreateView,
-    MaoDeObraUpdateView,
-    MaoDeObraDeleteView,
-    TipoTipoDeMaoDeObraListView
+    CategoriaServicoListView,
+    CategoriaServicoCreateView,
+    CategoriaServicoUpdateView,
+    CategoriaServicoDeleteView,
+    ServicoListView,
+    ServicoCreateView,
+    ServicoUpdateView,
+    ServicoDeleteView,
+
 
 )
 
-app_name = 'maodeobra'
+app_name = 'servicos'
 
 urlpatterns = [
 
-    path('mao-de-obra/', MaoDeObraListView.as_view(), name='lista_mao_obra'),
-    path('mao-de-obra/novo/', MaoDeObraCreateView.as_view(), name='nova_mao_de_obra'),
-    path('mao-de-obra/atualizar/<int:pk>/', MaoDeObraUpdateView.as_view(), name='atualizar_mao_de_obra'),
-    path('mao-de-obra/deletar/<int:pk>/', MaoDeObraDeleteView.as_view(), name='deletar_mao_de_obra'),
-    path('tipo/', TipoTipoDeMaoDeObraListView.as_view(), name='lista_tipo_mao_de_obra'),
+    path('', ServicoListView.as_view(), name='lista_servicos'),
+    path('novo/', ServicoCreateView.as_view(), name='novo_servico'),
+    path('atualizar/<int:pk>/', ServicoUpdateView.as_view(), name='atualizar_servico'),
+    path('deletar/<int:pk>/', ServicoDeleteView.as_view(), name='deletar_servico'),
+
+    path('categoria/', CategoriaServicoListView.as_view(), name='lista_categoria_servico'),
+    path('categoria/nova/', CategoriaServicoCreateView.as_view(), name='nova_categoria_servico'),
+    path('categoria/atualizar/<int:pk>/', CategoriaServicoUpdateView.as_view(), name='atualizar_categoria_servico'),
+    path('deletar/categoria/<int:pk>/', CategoriaServicoDeleteView.as_view(), name='deletar_categoria_servico'),
 
 ]
