@@ -8,8 +8,10 @@ from apps.orcamentos import urls as orcamentos_urls
 from apps.clientes import urls as cliente_urls
 from apps.produtos import urls as produtos_urls
 from apps.home import urls as home_urls
+from apps.servicos import urls as servicos_url
 
 urlpatterns = [
+    path('servicos/', include(servicos_url)),
     path('home/', include(home_urls)),
     path('orcamentos/', include(orcamentos_urls)),
     path('clientes/', include(cliente_urls)),

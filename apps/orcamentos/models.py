@@ -1,7 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from apps.core.models import Base
-from apps.servicos.models import MaoDeObra
+from apps.servicos.models import Servico
 from apps.clientes.models import Cliente
 from apps.empresas.models import Empresa
 from apps.produtos.models import Produto
@@ -69,10 +69,10 @@ class ItemMaoDeObra(models.Model):
         related_name='mao_obra_orcamento'
     )
     mao_de_obra = models.ForeignKey(
-        MaoDeObra,
+        Servico,
         on_delete=models.CASCADE,
-        verbose_name='Mão de Obra',
-        related_name='item_mao_obra'
+        verbose_name='Serviço',
+        related_name='item_servico'
     )
     preco = models.DecimalField('Preço', decimal_places=2, max_digits=8)
     total = models.DecimalField('Total', decimal_places=2, max_digits=8, null=True, blank=True)
@@ -81,8 +81,8 @@ class ItemMaoDeObra(models.Model):
     modified = models.DateTimeField('Modificado em', auto_now=True)
 
     class Meta:
-        verbose_name = 'Item mão de obra'
-        verbose_name_plural = 'Itens Mãos de Obras'
+        verbose_name = 'Item Servico'
+        verbose_name_plural = 'Itens Serviços'
         ordering = ['-created']
 
     def __str__(self):

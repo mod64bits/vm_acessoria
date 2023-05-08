@@ -67,24 +67,30 @@
                 </li>
             </ul>
         </li>
-        <li class="nav-item {% if menu_open_cliente %}menu-open{% endif %}">
-            <a href="#" class="nav-link {% if menu_open_cliente %}active{% endif %}">
+        <li class="nav-item {% if open_menu_servico %}menu-open{% endif %}">
+            <a href="#" class="nav-link {% if active_menu_servico %}active{% endif %}">
                 <i class="nav-icon fas fa-chart-pie"></i>
                 <p>
-                    Clientes
+                    Serviços
                     <i class="right fas fa-angle-left"></i>
                 </p>
             </a>
             <ul class="nav nav-treeview">
                 <li class="nav-item ">
-                    <a href="{% url 'clientes:lista_clientes' %}" class="nav-link {% if active_cliente %}active{% endif %}">
+                    <a href="{% url 'servicos:lista_servicos' %}" class="nav-link {% if active_servico %}active{% endif %}">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>Clientes</p>
+                        <p>Serviços</p>
+                    </a>
+                </li>
+            </ul>
+        <ul class="nav nav-treeview">
+                <li class="nav-item ">
+                    <a href="{% url 'servicos:lista_categoria_servico' %}" class="nav-link {% if active_categoria_servico %}active{% endif %}">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Categorias</p>
                     </a>
                 </li>
             </ul>
         </li>
-
-
     </ul>
 </nav>

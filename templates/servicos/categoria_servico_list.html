@@ -1,0 +1,134 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+
+{% block titulo_pagina %}Categorias Serviços{% endblock titulo_pagina %}
+
+{% block content %}
+    <div class="modal fade" id="create-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2 with id="modal" -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content"></div>
+        </div>
+    </div>
+
+    <!-- Create book button -->
+
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>Categoria Serviço</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active">Servicos</li>
+                            <li class="breadcrumb-item active">Categoria</li>
+                        </ol>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <button id="create-maoDeObra" class="btn btn-primary" type="button" name="button">Nova Categoria</button>
+                            </div>
+                            <!-- ./card-header -->
+                            <div class="card-body">
+                             {% include 'servicos/includes/_tipo_servicos_table.html' %}
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+    </div>
+{% endblock content %}
+
+
+{% block js %}
+
+    <script src="{% static 'core/plugins/jquery/jquery.min.js' %}"></script>
+    {% include 'core/includes/base_js_sem_jquery.html' %}
+    <script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>
+    <!-- You can alternatively load the minified version -->
+    <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            $("#create-maoDeObra").modalForm({
+                formURL: "{% url 'servicos:nova_categoria_servico' %}"
+            });
+
+            var asyncSuccessMessageUpdate = [
+            "<div ",
+            "style='position:fixed;top:0;z-index:10000;width:100%;border-radius:0;' ",
+            "class='alert alert-icon alert-success alert-dismissible fade show mb-0' role='alert'>",
+            "Success: Book was updated.",
+            "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>",
+            "<span aria-hidden='true'>&times;</span>",
+            "</button>",
+            "</div>",
+            "<script>",
+            "$('.alert').fadeTo(2000, 500).slideUp(500, function () {$('.alert').slideUp(500).remove();});",
+            "<\/script>"
+          ].join("");
+
+            function updateMaoDeObraModalForm() {
+            $(".update-mao-de-obra").each(function () {
+              $(this).modalForm({
+                formURL: $(this).data("form-url"),
+                asyncUpdate: false,
+                asyncSettings: {
+                  closeOnSubmit: false,
+                  successMessage: asyncSuccessMessageUpdate,
+                  dataUrl: "categoria/",
+                  dataElementId: "#books-table",
+                  dataKey: "table",
+                  addModalFormFunction: reinstantiateModalForms
+                }
+              });
+            });
+          }
+          updateMaoDeObraModalForm();
+
+        function reinstantiateModalForms() {
+
+        updateMaoDeObraModalForm();
+
+      }
+
+       function deleteCategoriaForm() {
+            $(".delete-categoria").each(function () {
+                $(this).modalForm({formURL: $(this).data("form-url"), isDeleteForm: true});
+            });
+          }
+          deleteCategoriaForm();
+
+        });
+    </script>
+
+
+{% endblock js %}
