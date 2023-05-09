@@ -9,8 +9,10 @@ from apps.clientes import urls as cliente_urls
 from apps.produtos import urls as produtos_urls
 from apps.home import urls as home_urls
 from apps.servicos import urls as servicos_url
+from apps.propostas import urls as propostas_url
 
 urlpatterns = [
+    path('propostas/', include(propostas_url)),
     path('servicos/', include(servicos_url)),
     path('home/', include(home_urls)),
     path('orcamentos/', include(orcamentos_urls)),
