@@ -10,8 +10,10 @@ from apps.produtos import urls as produtos_urls
 from apps.home import urls as home_urls
 from apps.servicos import urls as servicos_url
 from apps.propostas import urls as propostas_url
+from apps.api import urls as api_urls
 
 urlpatterns = [
+    path('api/v1/', include(api_urls)),
     path('propostas/', include(propostas_url)),
     path('servicos/', include(servicos_url)),
     path('home/', include(home_urls)),
