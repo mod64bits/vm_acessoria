@@ -16,3 +16,8 @@ class GeradorKeys:
 
     def key(self):
         return self.__key_ano_gerador()
+
+    def key_proposta(self, proposta_id):
+        codigo = f"#{date.today()}-{proposta_id}"
+        return codigo
+    
