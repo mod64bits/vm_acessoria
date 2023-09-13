@@ -15,9 +15,9 @@ BASE_DIR_DECOPLE = Paths(__file__).parent
 SECRET_KEY = 'django-insecure-_@d!&v%0o=az9v32^2ayn&29h7+1w-1pq#pqggzsh%_9hh(-mx'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=lambda v: [s.strip() for s in v.split(',')])
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'apps.dashboard',
     'apps.home',
     'apps.propostas',
+    'apps.pix',
 ]
 
 MIDDLEWARE = [
@@ -135,7 +136,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 print(DEBUG)
-if DEBUG is True:
+if DEBUG:
     STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static")
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 else:

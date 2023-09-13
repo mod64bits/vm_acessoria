@@ -9,10 +9,11 @@ from .forms import OrcamentoProdutoForm, OrcamentoMaoDeObraForm
 from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView, BSModalDeleteView
 from .models import Orcamento, ItemProduto, ItemMaoDeObra
 from .forms import OrcamentoUpdateForm
-
 from apps.core.ultils import GeradorKeys
 
 from .calculos_orcamentos import ValoresOrcamento
+from ..pix.models import QrPix
+from pypix import Pix
 
 
 class GerarOrcamentoView(LoginRequiredMixin, DetailView):
@@ -32,6 +33,47 @@ class GerarOrcamentoView(LoginRequiredMixin, DetailView):
 
 class ImprimirOrcamento(GerarOrcamentoView):
     template_name = 'orcamentos/orcamento_impressao.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ImprimirOrcamento, self).get_context_data(**kwargs)
+        if QrPix.objects.filter(orcamento_id=self.object.id).exists():
+            context['qrcode_cliente'] = QrPix.objects.get(orcamento=self.object)
+        else:
+            import base64
+            from django.core.files.base import ContentFile
+            _valor = context['total_orcamento'].split(' ')[1]
+            valor = float(_valor.replace(',', '.'))
+
+            data = self.create_qrcode(valor)
+
+            format, imgstr = data.split(';base64,')
+
+            ext = format.split('/')[-1]
+            data = ContentFile(base64.b64decode(imgstr), name=f'pix_cliente{self.object.id}.' + ext)
+
+            QrPix.objects.create(
+                orcamento=self.object,
+                total=valor,
+                qr_code=data
+            )
+            context['qrcode_cliente'] = QrPix.objects.get(orcamento=self.object)
+        return context
+    def create_qrcode(self, amount):
+
+        pix = Pix()
+        pix.set_name_receiver('Marcio Oliveira de Deus')
+        pix.set_city_receiver('aguasdelindoia')
+        pix.set_key('04855527440')
+        pix.set_identification('123')
+        pix.set_zipcode_receiver('13940000')
+        pix.set_description('mod64bits')
+        pix.set_amount(amount)
+        base64qr = pix.save_qrcode('./qrcode.png', color="green", box_size=7,
+                                   border=1,
+                                   )
+
+
+        return base64qr
 
 
 class OrcamentosView(LoginRequiredMixin, ListView):

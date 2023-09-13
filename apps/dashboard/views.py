@@ -53,7 +53,6 @@ class Dashboard(LoginRequiredMixin, TemplateView):
             "Julho": 7,
             "August": 8,
             "agosto": 8,
-            "Setembro": 9,
             "September": 9,
             "October": 10,
             "outubro": 10,
