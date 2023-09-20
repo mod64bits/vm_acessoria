@@ -10,12 +10,12 @@ from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView, 
 from .models import Orcamento, ItemProduto, ItemMaoDeObra
 from .forms import OrcamentoUpdateForm
 from apps.core.ultils import GeradorKeys
-
+import numpy
 from .calculos_orcamentos import ValoresOrcamento
 from ..pix.models import QrPix
 from pypix import Pix
-
-
+from decimal import Decimal
+from apps.core.gerador_pix import novo_qrpix_orcamento
 class GerarOrcamentoView(LoginRequiredMixin, DetailView):
     model = Orcamento
     template_name = 'orcamentos/orcamento.html'
@@ -36,28 +36,30 @@ class ImprimirOrcamento(GerarOrcamentoView):
 
     def get_context_data(self, **kwargs):
         context = super(ImprimirOrcamento, self).get_context_data(**kwargs)
-        if QrPix.objects.filter(orcamento_id=self.object.id).exists():
-            context['qrcode_cliente'] = QrPix.objects.get(orcamento=self.object)
-        else:
-            import base64
-            from django.core.files.base import ContentFile
-            _valor = context['total_orcamento'].split(' ')[1]
-            valor = float(_valor.replace(',', '.'))
-
-            data = self.create_qrcode(valor)
-
-            format, imgstr = data.split(';base64,')
-
-            ext = format.split('/')[-1]
-            data = ContentFile(base64.b64decode(imgstr), name=f'pix_cliente{self.object.id}.' + ext)
-
-            QrPix.objects.create(
-                orcamento=self.object,
-                total=valor,
-                qr_code=data
-            )
-            context['qrcode_cliente'] = QrPix.objects.get(orcamento=self.object)
+        # if QrPix.objects.filter(orcamento_id=self.object.id).exists():
+        #     context['qrcode_cliente'] = QrPix.objects.get(orcamento=self.object)
+        # else:
+        #     import base64
+        #     from django.core.files.base import ContentFile
+        #     _valor = context['total_orcamento'].split(' ')[1]
+        #     valor = float(_valor.replace('.', '').replace(',', '.'))
+        #
+        #     data = self.create_qrcode(valor)
+        #
+        #     format, imgstr = data.split(';base64,')
+        #
+        #     ext = format.split('/')[-1]
+        #     data = ContentFile(base64.b64decode(imgstr), name=f'pix_cliente{self.object.id}.' + ext)
+        #
+        #     QrPix.objects.create(
+        #         orcamento=self.object,
+        #         total=valor,
+        #         qr_code=data
+        #     )
+        context['qrcode_cliente'] = novo_qrpix_orcamento(instance=self.object, value=context['total_orcamento'])
         return context
+
+
     def create_qrcode(self, amount):
 
         pix = Pix()

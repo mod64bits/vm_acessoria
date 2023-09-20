@@ -7,3 +7,6 @@ class QrPix(models.Model):
     total = models.DecimalField('Total', decimal_places=2, max_digits=8, null=True,blank=True)
     qr_code = models.ImageField(
         'QRcode', upload_to='qrcode/%Y/%m/%d', null=True, blank=True,)
+
+    def __str__(self):
+        return self.orcamento.cliente.nome
