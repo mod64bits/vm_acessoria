@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django_jsonform',
     'rest_framework',
     'corsheaders',
+    'django_extensions',
 
     'apps.users',
     'apps.core',

@@ -116,10 +116,10 @@ class OrcamentoUpdate(LoginRequiredMixin, UpdateView):
         context = super().get_context_data(**kwargs)
         orcamento = self.get_object().id
         valores = ValoresOrcamento(orcamento_id=orcamento)
-        context['total_produtos'] = valores.total_orcamento()['total_produtos']
-        context['total_maos_de_obras'] = valores.total_orcamento()['total_mao_de_obra']
-        context['total_orcamento'] = valores.total_orcamento()['total_orcamento']
-        context['total_lucro'] = valores.total_orcamento()['total_lucro']
+        # context['total_produtos'] = valores.total_orcamento()['total_produtos']
+        # context['total_maos_de_obras'] = valores.total_orcamento()['total_mao_de_obra']
+        #context['total_orcamento'] = valores.total_orcamento()['total_orcamento']
+        #context['total_lucro'] = valores.total_orcamento()['total_lucro']
         context['qt_produtos'] = valores.quabtidade_produtos()
         context['qt_mao_de_obra'] = valores.quantidade_mao_de_obra()
         context['menu_open_orcamento'] = True
@@ -139,9 +139,10 @@ class AdcionarProdutoView(LoginRequiredMixin, BSModalCreateView):
             produto = ItemProduto.objects.get(produto_id=form.instance.produto.id, orcamento=orcamento)
             form.instance = produto
             form.instance.quantidade += qt
+        #total_orcamento = self.object.filter()
         form.instance.orcamento = orcamento
 
-        form.instance.total = decimal.Decimal(form.instance.preco * form.instance.quantidade)
+        form.instance.preco = decimal.Decimal(form.instance.preco * form.instance.quantidade)
 
         return super(AdcionarProdutoView, self).form_valid(form)
 
@@ -151,20 +152,17 @@ class AdiconarMaoDeObraView(LoginRequiredMixin, BSModalCreateView):
     form_class = OrcamentoMaoDeObraForm
     success_message = 'Mão de obra adcionado com sucesso!'
 
+
     def form_valid(self, form):
         orcamento = Orcamento.objects.get(id=self.kwargs['pk'])
-        qt = form.instance.quantidade
         if ItemMaoDeObra.objects.filter(mao_de_obra_id=form.instance.mao_de_obra.id,
                                         orcamento_id=self.kwargs['pk']).exists():
             mao_obra = ItemMaoDeObra.objects.get(mao_de_obra_id=form.instance.mao_de_obra_id,
                                                  orcamento_id=self.kwargs['pk'])
             form.instance = mao_obra
-            form.instance.quantidade += qt
         else:
             form.instance.orcamento = orcamento
             form.instance.id = None
-
-            form.instance.total = decimal.Decimal(form.instance.preco * form.instance.quantidade)
 
         return super(AdiconarMaoDeObraView, self).form_valid(form)
 
@@ -175,7 +173,7 @@ class EditarItemProdutoView(BSModalUpdateView):
     form_class = OrcamentoProdutoForm
 
     def form_valid(self, form):
-        form.instance.total = decimal.Decimal(form.instance.preco * form.instance.quantidade)
+        form.instance.preco = decimal.Decimal(form.instance.preco * form.instance.quantidade)
         return super(EditarItemProdutoView, self).form_valid(form)
 
 
