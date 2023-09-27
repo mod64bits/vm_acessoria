@@ -51,24 +51,6 @@ class Orcamento(models.Model):
     def get_absolute_url(self):
         return reverse('orcamento:update_orcamento', kwargs={'pk': self.id})
 
-    def total_produto(self):
-        aggregate_queryset = self.produto_orcamento.aggregate(
-            total=models.Sum(
-                models.F('preco') * models.F('quantidade'),
-                output_field=models.DecimalField()
-            )
-        )
-        return aggregate_queryset['total']
-
-    def total_servico(self):
-        aggregate_queryset = self.produto_orcamento.aggregate(
-            total=models.Sum(
-                models.F('preco'),
-                output_field=models.DecimalField()
-            )
-        )
-        return aggregate_queryset['total_servico']
-
 
 class ItemMaoDeObra(models.Model):
     orcamento = models.ForeignKey(
@@ -113,7 +95,8 @@ class ItemProduto(models.Model):
         verbose_name='Produto',
         related_name='item_produto',
     )
-    preco = models.DecimalField('Preço', decimal_places=2, max_digits=8)
+    preco = models.DecimalField('Preço', decimal_places=2, max_digits=8, null=True, blank=True)
+    total = models.DecimalField('Total', decimal_places=2, max_digits=8, null=True, blank=True)
 
     quantidade = models.PositiveIntegerField('Quantidade', default=1)
     created = models.DateTimeField('Criado em', auto_now_add=True)
@@ -148,7 +131,7 @@ def update_total_orcamento(sender, instance, signal, *args, **kwargs):
     for item_mao_de_obra in _obj_compra_mao_de_obra:
         total_item_mao_de_obra += item_mao_de_obra.valor
 
-    orcamento.total = total_produtos
+    orcamento.total_equipamentos = total_produtos
     orcamento.total_mao_de_obra = total_mao_de_obra
     orcamento.total = total_produtos + total_mao_de_obra
 

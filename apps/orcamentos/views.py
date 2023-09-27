@@ -139,10 +139,9 @@ class AdcionarProdutoView(LoginRequiredMixin, BSModalCreateView):
             produto = ItemProduto.objects.get(produto_id=form.instance.produto.id, orcamento=orcamento)
             form.instance = produto
             form.instance.quantidade += qt
-        #total_orcamento = self.object.filter()
         form.instance.orcamento = orcamento
 
-        form.instance.preco = decimal.Decimal(form.instance.preco * form.instance.quantidade)
+        form.instance.total = decimal.Decimal(form.instance.preco * form.instance.quantidade)
 
         return super(AdcionarProdutoView, self).form_valid(form)
 
@@ -173,7 +172,7 @@ class EditarItemProdutoView(BSModalUpdateView):
     form_class = OrcamentoProdutoForm
 
     def form_valid(self, form):
-        form.instance.preco = decimal.Decimal(form.instance.preco * form.instance.quantidade)
+        form.instance.total = decimal.Decimal(form.instance.preco * form.instance.quantidade)
         return super(EditarItemProdutoView, self).form_valid(form)
 
 

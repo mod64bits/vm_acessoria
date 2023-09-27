@@ -2,7 +2,7 @@
 {% load static %}
 {% load l10n %}
 {% load widget_tweaks %}
-
+{% load orcamentos_extras %}
 {% block css %}
     <link rel="stylesheet" href="{% static 'core/plugins/select2/css/select2.min.css' %}">
     <link rel="stylesheet" href="{% static 'core/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
@@ -40,7 +40,7 @@
                             <div class="info-box-content">
                                 <span class="info-box-text">Total Equipamentos</span>
                                 <span class="info-box-number">
-                  {{ object.total_equipamentos }}
+                  {{ object.total_equipamentos|convert_real_br }}
 
                 </span>
                             </div>
@@ -55,7 +55,7 @@
 
                             <div class="info-box-content">
                                 <span class="info-box-text">Total Mão de Obra</span>
-                                <span class="info-box-number">{{ total_maos_de_obras }}</span>
+                                <span class="info-box-number">{{ object.total_mao_de_obra|convert_real_br }}</span>
                             </div>
                             <!-- /.info-box-content -->
                         </div>
@@ -72,7 +72,7 @@
 
                             <div class="info-box-content">
                                 <span class="info-box-text">Total Orçamento</span>
-                                <span class="info-box-number">{{ total_orcamento }}</span>
+                                <span class="info-box-number">{{ object.total|convert_real_br }}</span>
                             </div>
                             <!-- /.info-box-content -->
                         </div>
@@ -85,7 +85,7 @@
 
                             <div class="info-box-content">
                                 <span class="info-box-text">Lucro</span>
-                                <span class="info-box-number">{{ total_lucro }}</span>
+                                <span class="info-box-number">{{ object.total_lucro|convert_real_br }}</span>
                             </div>
                             <!-- /.info-box-content -->
                         </div>
@@ -255,22 +255,18 @@
                                 <table class="table table-bordered table-hover">
                                     <thead>
                                     <tr>
-                                        <th>ID</th>
                                         <th>Produto</th>
-                                        <th>Quantidade</th>
+                                        <th>Descrição</th>
                                         <th>Preço</th>
-                                        <th>Total</th>
 
                                     </tr>
                                     </thead>
                                     <tbody>
                                     {% for item_mao in object.mao_obra_orcamento.all %}
                                         <tr data-widget="expandable-table" aria-expanded="false">
-                                            <td>{{ item_mao.id }}</td>
                                             <td>{{ item_mao.mao_de_obra }}</td>
-                                            <td>{{ item_mao.quantidade }}</td>
-                                            <td>{{ item_mao.preco }}</td>
-                                            <td>{{ item_mao.total }}</td>
+                                            <td>{{ item_mao.descricao }}</td>
+                                            <td>{{ item_mao.valor|convert_real_br }}</td>
                                         </tr>
                                         <tr class="expandable-body">
                                             <td colspan="5">
@@ -280,7 +276,6 @@
                                             </td>
                                         </tr>
                                     {% endfor %}
-
                                     </tbody>
                                 </table>
                             </div>
@@ -289,7 +284,7 @@
                         <!-- /.card -->
                     </div>
                     <div class="col-12">
-                        <div class="card card-yellow card-outline">
+                         <div class="card card-yellow card-outline">
                             <div class="card-header">
                                 <h3 class="card-title">Equipamentos</h3>
                             </div>
@@ -298,10 +293,11 @@
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
                                     <tr>
-                                        <th>#</th>
                                         <th>Produto</th>
+                                        <th>Preço de Compra</th>
+                                        <th>Preço de Venda</th>
+                                        <th>Lucro Por Unidade</th>
                                         <th>Quantidade</th>
-                                        <th>Preço</th>
                                         <th>Total</th>
                                         <th>Ação</th>
                                     </tr>
@@ -310,10 +306,11 @@
 
                                     {% for item in object.produto_orcamento.all %}
                                         <tr>
-                                            <td>{{ item.id }}</td>
-                                            <td>{{ item.produto }}</td>
-                                            <td>{{ item.quantidade }}</td>
+                                            <td>{{ item.produto.nome }}</td>
+                                            <td>{{ item.produto.preco_compra }}</td>
                                             <td>{{ item.preco }}</td>
+                                            <td>{{ item.produto.preco_compra|lucro:item.preco|safe }}</td>
+                                            <td>{{ item.quantidade }}</td>
                                             <td>{{ item.total }}</td>
                                             <td>
                                                 <button type="button" class="update-produto btn btn-sm btn-primary" data-form-url="{% url 'orcamento:editar_produto_orcamento' item.pk %}">
@@ -328,10 +325,11 @@
                                     </tbody>
                                     <tfoot>
                                     <tr>
-                                        <th>#</th>
-                                        <th>Produto</th>
+                                         <th>Produto</th>
+                                        <th>Preço de Compra</th>
+                                        <th>Preço de Venda</th>
+                                        <th>Lucro Por Unidade</th>
                                         <th>Quantidade</th>
-                                        <th>Preço</th>
                                         <th>Total</th>
                                         <th>Ação</th>
                                     </tr>
