@@ -5,9 +5,7 @@ from apps.servicos.models import Servico
 from apps.clientes.models import Cliente
 from apps.empresas.models import Empresa
 from apps.produtos.models import Produto
-from apps.core.ultils import GeradorKeys
 from apps.core.ultils import Datas
-# from .managers import OrcamentoManager
 from django.db.models import signals
 
 
@@ -124,21 +122,20 @@ def update_total_orcamento(sender, instance, signal, *args, **kwargs):
     _obj_produto_compra = ItemProduto.objects.filter(orcamento=orcamento)
     _obj_compra_mao_de_obra = ItemMaoDeObra.objects.filter(orcamento=orcamento)
     tota_item_compra = 0
-    total_item_mao_de_obra = 0
     for item_comp in _obj_produto_compra:
         tota_item_compra += item_comp.produto.preco_compra
-
-    for item_mao_de_obra in _obj_compra_mao_de_obra:
-        total_item_mao_de_obra += item_mao_de_obra.valor
 
     orcamento.total_equipamentos = total_produtos
     orcamento.total_mao_de_obra = total_mao_de_obra
     orcamento.total = total_produtos + total_mao_de_obra
 
-    orcamento.total_lucro = ((total_produtos + total_mao_de_obra) - tota_item_compra) - total_item_mao_de_obra
+    orcamento.total_lucro = ((total_produtos + total_mao_de_obra) - tota_item_compra)
 
     orcamento.save()
 
 
 signals.post_save.connect(update_total_orcamento, sender=ItemProduto)
 signals.post_delete.connect(update_total_orcamento, sender=ItemProduto)
+
+signals.post_save.connect(update_total_orcamento, sender=ItemMaoDeObra)
+signals.post_delete.connect(update_total_orcamento, sender=ItemMaoDeObra)

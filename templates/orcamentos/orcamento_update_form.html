@@ -267,6 +267,14 @@
                                             <td>{{ item_mao.mao_de_obra }}</td>
                                             <td>{{ item_mao.descricao }}</td>
                                             <td>{{ item_mao.valor|convert_real_br }}</td>
+                                        <td>
+                                                <button type="button" class="update-servico btn btn-sm btn-primary" data-form-url="{% url 'orcamento:editar_servico_orcamento' item_mao.pk %}">
+                                                    <span class="fas fa-pencil-alt"></span>
+                                                </button>
+                                                <button type="button" class="delete-produto btn btn-sm btn-danger" data-form-url="{% url 'orcamento:deletar_servico_orcamento' item_mao.pk %}">
+                                                    <span class="fa fa-trash"></span>
+                                                </button>
+                                            </td>
                                         </tr>
                                         <tr class="expandable-body">
                                             <td colspan="5">
@@ -431,12 +439,33 @@
                     });
                 });
             }
+            function updateServicoModalForm() {
+                $(".update-servico").each(function () {
+                    $(this).modalForm({
+                        formURL: $(this).data("form-url"),
+                        asyncUpdate: false,
+                        asyncSettings: {
+                            closeOnSubmit: false,
+                            successMessage: asyncSuccessMessageUpdate,
+                            dataUrl: "servico/",
+                            dataElementId: "#books-table",
+                            dataKey: "table",
+                            addModalFormFunction: reinstantiateServicoModalForms
+                        }
+                    });
+                });
+            }
+            updateServicoModalForm();
             updateProdutoModalForm();
 
-            function reinstantiateModalForms() {
+            function reinstantiateServicoModalForms() {
 
                 updateProdutoModalForm();
 
+
+            }
+             function reinstantiateModalForms() {
+                updateServicoModalForm();
             }
 
             function deleteProdutoForm() {
