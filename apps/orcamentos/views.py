@@ -10,25 +10,15 @@ from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView, 
 from .models import Orcamento, ItemProduto, ItemMaoDeObra
 from .forms import OrcamentoUpdateForm
 from apps.core.ultils import GeradorKeys
-import numpy
-from .calculos_orcamentos import ValoresOrcamento
 from ..pix.models import QrPix
 from pypix import Pix
 from decimal import Decimal
 from apps.core.gerador_pix import novo_qrpix_orcamento
+
+
 class GerarOrcamentoView(LoginRequiredMixin, DetailView):
     model = Orcamento
     template_name = 'orcamentos/orcamento.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        orcamento = self.get_object().id
-        valores = ValoresOrcamento(orcamento_id=orcamento)
-        context = super().get_context_data(**kwargs)
-        context['total_produtos'] = valores.total_orcamento()['total_produtos']
-        context['total_maos_de_obras'] = valores.total_orcamento()['total_mao_de_obra']
-        context['total_orcamento'] = valores.total_orcamento()['total_orcamento']
-        return context
 
 
 class ImprimirOrcamento(GerarOrcamentoView):
@@ -36,32 +26,10 @@ class ImprimirOrcamento(GerarOrcamentoView):
 
     def get_context_data(self, **kwargs):
         context = super(ImprimirOrcamento, self).get_context_data(**kwargs)
-        # if QrPix.objects.filter(orcamento_id=self.object.id).exists():
-        #     context['qrcode_cliente'] = QrPix.objects.get(orcamento=self.object)
-        # else:
-        #     import base64
-        #     from django.core.files.base import ContentFile
-        #     _valor = context['total_orcamento'].split(' ')[1]
-        #     valor = float(_valor.replace('.', '').replace(',', '.'))
-        #
-        #     data = self.create_qrcode(valor)
-        #
-        #     format, imgstr = data.split(';base64,')
-        #
-        #     ext = format.split('/')[-1]
-        #     data = ContentFile(base64.b64decode(imgstr), name=f'pix_cliente{self.object.id}.' + ext)
-        #
-        #     QrPix.objects.create(
-        #         orcamento=self.object,
-        #         total=valor,
-        #         qr_code=data
-        #     )
         context['qrcode_cliente'] = novo_qrpix_orcamento(instance=self.object, value=context['total_orcamento'])
         return context
 
-
     def create_qrcode(self, amount):
-
         pix = Pix()
         pix.set_name_receiver('Marcio Oliveira de Deus')
         pix.set_city_receiver('aguasdelindoia')
@@ -73,7 +41,6 @@ class ImprimirOrcamento(GerarOrcamentoView):
         base64qr = pix.save_qrcode('./qrcode.png', color="green", box_size=7,
                                    border=1,
                                    )
-
 
         return base64qr
 
@@ -114,14 +81,8 @@ class OrcamentoUpdate(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        orcamento = self.get_object().id
-        valores = ValoresOrcamento(orcamento_id=orcamento)
-        context['total_produtos'] = valores.total_orcamento()['total_produtos']
-        context['total_maos_de_obras'] = valores.total_orcamento()['total_mao_de_obra']
-        context['total_orcamento'] = valores.total_orcamento()['total_orcamento']
-        context['total_lucro'] = valores.total_orcamento()['total_lucro']
-        context['qt_produtos'] = valores.quabtidade_produtos()
-        context['qt_mao_de_obra'] = valores.quantidade_mao_de_obra()
+        context['qt_produtos'] = len(self.object.produto_orcamento.all())
+        context['qt_mao_de_obra'] = len(self.object.mao_obra_orcamento.all())
         context['menu_open_orcamento'] = True
 
         return context
@@ -151,25 +112,22 @@ class AdiconarMaoDeObraView(LoginRequiredMixin, BSModalCreateView):
     form_class = OrcamentoMaoDeObraForm
     success_message = 'Mão de obra adcionado com sucesso!'
 
+
     def form_valid(self, form):
         orcamento = Orcamento.objects.get(id=self.kwargs['pk'])
-        qt = form.instance.quantidade
         if ItemMaoDeObra.objects.filter(mao_de_obra_id=form.instance.mao_de_obra.id,
                                         orcamento_id=self.kwargs['pk']).exists():
             mao_obra = ItemMaoDeObra.objects.get(mao_de_obra_id=form.instance.mao_de_obra_id,
                                                  orcamento_id=self.kwargs['pk'])
             form.instance = mao_obra
-            form.instance.quantidade += qt
         else:
             form.instance.orcamento = orcamento
             form.instance.id = None
 
-            form.instance.total = decimal.Decimal(form.instance.preco * form.instance.quantidade)
-
         return super(AdiconarMaoDeObraView, self).form_valid(form)
 
 
-class EditarItemProdutoView(BSModalUpdateView):
+class EditarItemProdutoView(LoginRequiredMixin, BSModalUpdateView):
     model = ItemProduto
     template_name = 'orcamentos/editar_item_produto.html'
     form_class = OrcamentoProdutoForm
@@ -189,4 +147,16 @@ class ItemProdutoDeleteView(LoginRequiredMixin, BSModalDeleteView):
         return reverse('orcamento:update_orcamento', kwargs={'pk': orcamento.orcamento.id})
 
 
-    # TODO Adcionar edição de item mão de obra
+class EditarServicos(LoginRequiredMixin, BSModalUpdateView):
+    model = ItemMaoDeObra
+    form_class = OrcamentoMaoDeObraForm
+    template_name = 'orcamentos/editar_servicos.html'
+
+
+class DeletarServicos(LoginRequiredMixin, BSModalDeleteView):
+    model = ItemMaoDeObra
+    template_name = 'orcamentos/delete_servico.html'
+
+    def get_success_url(self):
+        orcamento = self.get_object()
+        return reverse('orcamento:update_orcamento', kwargs={'pk': orcamento.orcamento.id})

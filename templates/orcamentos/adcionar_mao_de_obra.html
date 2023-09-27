@@ -11,10 +11,7 @@
 
     <div class="modal-body">
         <div class="col-md-12">
-            <div class="form-group">
-                {% render_field form.execurcao_parceiro class="form-check-input" type="checkbox" style="width: 100%;"%}
-                <label for="{{ form.execurcao_parceiro.id }}">{{ form.execurcao_parceiro.label }}</label>
-            </div>
+
         </div>
         <div class="col-md-12">
             <div class="form-group">
@@ -23,16 +20,17 @@
                 {% render_field form.mao_de_obra class="form-control select2bs4" type="text" style="width: 100%;"%}
             </div>
         </div>
-        <div class="field item form-group">
-            <label class="col-form-label col-md-3 col-sm-3  label-align">{{ form.quantidade.label }}<span class="required">*</span></label>
-            <div class="col-md-6 col-sm-6">
-                {% render_field form.quantidade class="form-control"  %}
-            </div>
+         <div class="col-md-12">
+         <div class="field item form-group">
+            <label>{{ form.descricao.label }}<span class="required">*</span></label>
+
+                {% render_field form.descricao class="form-control" cols="40" rows="5" %}
+
         </div>
         <div class="field item form-group">
-            <label class="col-form-label col-md-3 col-sm-3  label-align">{{ form.preco.label }}<span class="required">*</span></label>
+            <label class="col-form-label col-md-3 col-sm-3  label-align">{{ form.valor.label }}<span class="required">*</span></label>
             <div class="col-md-6 col-sm-6">
-                {% render_field form.preco class="form-control"  %}
+                {% render_field form.valor class="form-control"  %}
             </div>
         </div>
     </div>
