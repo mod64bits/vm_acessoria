@@ -10,24 +10,15 @@ from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView, 
 from .models import Orcamento, ItemProduto, ItemMaoDeObra
 from .forms import OrcamentoUpdateForm
 from apps.core.ultils import GeradorKeys
-from .calculos_orcamentos import ValoresOrcamento
 from ..pix.models import QrPix
 from pypix import Pix
 from decimal import Decimal
 from apps.core.gerador_pix import novo_qrpix_orcamento
+
+
 class GerarOrcamentoView(LoginRequiredMixin, DetailView):
     model = Orcamento
     template_name = 'orcamentos/orcamento.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        orcamento = self.get_object().id
-        valores = ValoresOrcamento(orcamento_id=orcamento)
-        context = super().get_context_data(**kwargs)
-        context['total_produtos'] = valores.total_orcamento()['total_produtos']
-        context['total_maos_de_obras'] = valores.total_orcamento()['total_mao_de_obra']
-        context['total_orcamento'] = valores.total_orcamento()['total_orcamento']
-        return context
 
 
 class ImprimirOrcamento(GerarOrcamentoView):
