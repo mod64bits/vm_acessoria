@@ -39,7 +39,7 @@
                 <div class="card card-default">
                     <div class="row">
                         <!-- left column -->
-                        <div class="col-md-12">
+                        <div class="col-md-3">
                             <!-- Horizontal Form -->
                             <div class="card card-info">
                                 <div class="card-header">
@@ -59,14 +59,20 @@
                                             </div>
                                         </div>
                                         {% for field in form %}
-                                            <div class="col-md-6">
+                                            <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                                                     {% if field.widget_type == 'select' %}
-                                                        {% render_field field class="form-control select2bs4" placeholder=field.label %}
+                                                        {% render_field field.widget.attrs.readonly class="form-control select2bs4" placeholder=field.label %}
+                                                    {% elif field.widget_type == 'checkbox'%}
+                                                        <div class="icheck-danger d-inline">
+                                                            {% render_field field  %}
+
+                                                        </div>
                                                     {% else %}
                                                         {% render_field field class="form-control" placeholder=field.label %}
                                                     {% endif %}
+
 
                                                     <div class="{% if field.errors %} invalid{% endif %}">
                                                         {% for error in field.errors %}
@@ -83,17 +89,51 @@
                                     </div>
                                     <!-- /.card-footer -->
                                 </form>
+
                             </div>
                             <!-- /.card -->
 
                         </div>
-                        <!--/.col (left) -->
-                        <!-- right column -->
+                        <div class="col-9">
+                            <div class="card card-solid">
+                                <div class="card-body pb-0">
+                                    <div class="row">
+                                        <div class="col-12  d-flex align-items-stretch flex-column">
+                                            <div class="card bg-light d-flex flex-fill">
+                                                <div class="card-body pt-1">
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <h2 class="lead"><b>{{ orcamento.cliente.nome }}</h2>
 
-                        <!--/.col (right) -->
+                                                            <ul class="ml-4 mb-0 fa-ul text-muted">
+                                                                <li class="small"><span class="fa-li"><i class="fas fa-lg fa-building"></i></span> Endereço: ------</li>
+                                                                <li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span> Telefone #: -----</li>
+                                                                <li class="small"><span class="fa-li"><i class="fas fa-lg fa-envelope-open"></i></span> Email #: {{ orcamento.cliente.email }}</li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-footer">
+                                                    <div class="text-right">
+                                                        <a href="#" class="btn btn-sm bg-teal">
+                                                            <i class="fas fa-comments"></i>
+                                                        </a>
+                                                        <a href="{% url 'proposta:proposta_pdf' proposta_id %}" class="btn btn-sm btn-primary">
+                                                            <i class="fas fa-user"></i> Gerar PDF
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
                     </div>
                 </div>
-            </div><!-- /.container-fluid -->
+            </div>
         </section>
         <!-- /.content -->
     </div>

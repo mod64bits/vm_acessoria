@@ -24,7 +24,12 @@ def novo_qrpix_orcamento(instance, value):
     )
     return new_qr
 
-
+def gerador_proposta_pix(codigo, valor):
+    qr_data = generator_qrcode(valor)
+    format, imgstr = qr_data.split(';base64,')
+    ext = format.split('/')[-1]
+    data = ContentFile(base64.b64decode(imgstr), name=f'pix_cliente{codigo}.' + ext)
+    return data
 
 def generator_qrcode(amount):
     pix = Pix()

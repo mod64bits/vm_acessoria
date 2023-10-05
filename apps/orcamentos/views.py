@@ -112,17 +112,18 @@ class AdiconarMaoDeObraView(LoginRequiredMixin, BSModalCreateView):
     form_class = OrcamentoMaoDeObraForm
     success_message = 'Mão de obra adcionado com sucesso!'
 
-
     def form_valid(self, form):
         orcamento = Orcamento.objects.get(id=self.kwargs['pk'])
+        qt = form.instance.quantidade
         if ItemMaoDeObra.objects.filter(mao_de_obra_id=form.instance.mao_de_obra.id,
                                         orcamento_id=self.kwargs['pk']).exists():
-            mao_obra = ItemMaoDeObra.objects.get(mao_de_obra_id=form.instance.mao_de_obra_id,
+            mao_obra = ItemMaoDeObra.objects.get(mao_de_obra_id=form.instance.produto.id,
                                                  orcamento_id=self.kwargs['pk'])
             form.instance = mao_obra
-        else:
-            form.instance.orcamento = orcamento
-            form.instance.id = None
+            form.instance.quantidade += qt
+        form.instance.orcamento = orcamento
+
+        form.instance.total = decimal.Decimal(form.instance.valor * form.instance.quantidade)
 
         return super(AdiconarMaoDeObraView, self).form_valid(form)
 
@@ -151,6 +152,11 @@ class EditarServicos(LoginRequiredMixin, BSModalUpdateView):
     model = ItemMaoDeObra
     form_class = OrcamentoMaoDeObraForm
     template_name = 'orcamentos/editar_servicos.html'
+
+    def form_valid(self, form):
+        print()
+        form.instance.total = form.instance.valor * form.instance.quantidade
+        return super(EditarServicos, self).form_valid(form)
 
 
 class DeletarServicos(LoginRequiredMixin, BSModalDeleteView):

@@ -65,6 +65,8 @@ class ItemMaoDeObra(models.Model):
     )
     descricao = models.TextField('Descrição', null=True, blank=True)
     valor = models.DecimalField('Preço', decimal_places=2, max_digits=8)
+    quantidade = models.PositiveIntegerField('Quantidade', default=1)
+    total = models.DecimalField('Total', decimal_places=2, max_digits=8, null=True, blank=True)
     created = models.DateTimeField('Criado em', auto_now_add=True)
     modified = models.DateTimeField('Modificado em', auto_now=True)
 
@@ -114,16 +116,26 @@ class ItemProduto(models.Model):
 
 def update_total_orcamento(sender, instance, signal, *args, **kwargs):
     orcamento = instance.orcamento
-    obj = ItemProduto.objects.filter(orcamento=orcamento).values('preco')
-    obj_mao_de_obra = ItemMaoDeObra.objects.filter(orcamento=orcamento).values('valor')
-    total_produtos = sum(sum(produto.values()) for produto in obj)
-    total_mao_de_obra = sum(sum(item.values()) for item in obj_mao_de_obra)
+    total_produtos = 0
+    total_mao_de_obra = 0
+    obj = ItemProduto.objects.filter(orcamento=orcamento)
+    obj_mao_de_obra = ItemMaoDeObra.objects.filter(orcamento=orcamento)
+
+    for produto_item in obj:
+        if not produto_item.total:
+            continue
+        total_produtos += produto_item.total
+
+    for item_servico in obj_mao_de_obra:
+        if not item_servico.total:
+            continue
+        total_mao_de_obra += item_servico.total
 
     _obj_produto_compra = ItemProduto.objects.filter(orcamento=orcamento)
     _obj_compra_mao_de_obra = ItemMaoDeObra.objects.filter(orcamento=orcamento)
     tota_item_compra = 0
     for item_comp in _obj_produto_compra:
-        tota_item_compra += item_comp.produto.preco_compra
+        tota_item_compra += item_comp.produto.preco_compra * item_comp.quantidade
 
     orcamento.total_equipamentos = total_produtos
     orcamento.total_mao_de_obra = total_mao_de_obra

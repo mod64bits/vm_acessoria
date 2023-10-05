@@ -1,44 +1,44 @@
 {% load widget_tweaks %}
-<form method="post" action="">
-    {% csrf_token %}
+<form method="post" action="" novalidate>
+  {% csrf_token %}
 
-    <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel2">Mão de Obra</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
+  <div class="modal-header">
+    <h3 class="modal-title">Adcionar mão de obra</h3>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+
+    <div class="{% if form.non_field_errors %}invalid{% endif %} mb-2">
+      {% for error in form.non_field_errors %}
+        {{ error }}
+      {% endfor %}
     </div>
 
-    <div class="modal-body">
-        <div class="col-md-12">
+    {% for field in form %}
+      <div class="form-group">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+      {% if field.widget_type == 'select' %}
+        {% render_field field class="form-control select2bs4" placeholder=field.label %}
+          {% else %}
+           {% render_field field class="form-control" placeholder=field.label %}
+      {% endif %}
 
+        <div class="{% if field.errors %} invalid{% endif %}">
+          {% for error in field.errors %}
+            <p class="help-block">{{ error }}</p>
+          {% endfor %}
         </div>
-        <div class="col-md-12">
-            <div class="form-group">
+      </div>
+    {% endfor %}
+  </div>
 
-                <label for="{{ form.mao_de_obra.id }}">{{ form.mao_de_obra.label }}</label>
-                {% render_field form.mao_de_obra class="form-control select2bs4" type="text" style="width: 100%;"%}
-            </div>
-        </div>
-         <div class="col-md-12">
-         <div class="field item form-group">
-            <label>{{ form.descricao.label }}<span class="required">*</span></label>
-
-                {% render_field form.descricao class="form-control" cols="40" rows="5" %}
-
-        </div>
-        <div class="field item form-group">
-            <label class="col-form-label col-md-3 col-sm-3  label-align">{{ form.valor.label }}<span class="required">*</span></label>
-            <div class="col-md-6 col-sm-6">
-                {% render_field form.valor class="form-control"  %}
-            </div>
-        </div>
-    </div>
-
-    <div class="modal-footer justify-content-between">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-        <button type="submit" class="btn btn-primary">Salvar</button>
-    </div>
+  <div class="modal-footer justify-content-between">
+      <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+    <button type="submit" class="btn btn-primary">Salvar</button>
+  </div>
 
 </form>
 
@@ -53,3 +53,4 @@
     })
 
 </script>
+

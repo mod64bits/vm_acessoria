@@ -1,0 +1,255 @@
+{% load static %}
+{% load orcamentos_extras %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Orçamento {{ object.codigo }}</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{% static 'core/plugins/fontawesome-free/css/all.min.css' %}">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{% static 'core/dist/css/adminlte.min.css' %}">
+</head>
+<body>
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Orçamento #{{ proposta.orcamento.codigo }}</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">{{ proposta.orcamento.cliente.nome }}</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <!-- Main content -->
+                    <div class="invoice p-3 mb-3">
+                        <!-- title row -->
+                        <div class="row">
+                            <div class="col-12">
+                                <h4>
+                                    <i class="fas fa-globe"></i> {{ proposta.orcamento.cliente.nome  }}.
+                                    <small class="float-right">Data: {{ proposta.orcamento.created|date:"d M, Y" }}</small>
+                                </h4>
+                            </div>
+                            <!-- /.col -->
+                        </div>
+                        <!-- info row -->
+                        <div class="row invoice-info">
+                            <div class="col-sm-4 invoice-col">
+                                Para
+                                <address>
+                                    <strong>{{ proposta.orcamento.cliente.nome }}</strong><br>
+                                    <strong>CPF/CNPJ: </strong>{{ proposta.orcamento.cliente.documento }}<br>
+
+                                    <strong>Contato:</strong>  {% for tel in object.cliente.c_telefone.all %}
+                                    {{ tel.numero|default:"---------------" }},
+                                {% endfor %}
+                                    <br>
+                                    <strong>Email:</strong> {{ object.cliente.email|default:"---------------" }}<br>
+                                </address>
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-sm-4 invoice-col">
+
+                                <address>
+                                    <strong>Responsavel: Marcio</strong><br>
+                                    <strong>Telefones:</strong>(19) 99966-4769 | 99617-1383
+                                    <strong>Email:</strong>mod64bits@gmal.com
+                                </address>
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-sm-4 invoice-col">
+                                <b>Order #{{ object.codigo }}</b><br>
+                                <br>
+                                <b>Validade:</b> {{ proposta.orcamento.validade|date:"d/m/Y" }}<br>
+                            </div>
+                            <!-- /.col -->
+                        </div>
+                        <!-- /.row -->
+                        <div class="row">
+
+                            <!-- /.col -->
+
+                            <div class="col-md-12">
+                                <div class="card card-default">
+                                    <div class="card-header">
+                                        <h3 class="card-title">
+                                            <i class="fas fa-bullhorn"></i>
+                                            Descrição do Orçamento
+                                        </h3>
+                                    </div>
+                                    <!-- /.card-header -->
+                                    <div class="card-body">
+                                        <div class="callout callout-success">
+                                            <p>{{ proposta.orcamento.descricao }}</p>
+                                        </div>
+                                    </div>
+                                    <!-- /.card-body -->
+                                </div>
+                                <!-- /.card -->
+                            </div>
+                            <!-- /.col -->
+                        </div>
+                        <!-- Table row -->
+                        <div class="row">
+                            <div class="card col-md-12">
+                                <div class="card-header border-transparent">
+                                    <h3 class="card-title">Equipamentos</h3>
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body col-md-12">
+                                    <div class="table-responsive">
+                                        <table class="table m-0">
+                                            <thead>
+                                            <tr>
+                                                <th>Quant.</th>
+                                                <th>Produto</th>
+                                                <th>Subtotal</th>
+                                                <th>Total</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for produto in proposta.orcamento.produto_orcamento.all %}
+                                                <tr>
+                                                    <td>{{ produto.quantidade }}</td>
+                                                    <td>{{ produto.produto.nome }}</td>
+                                                    <td>{{ produto.preco }}</td>
+                                                    <td>
+                                                        {{ proposta.orcamento.total }}
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- /.table-responsive -->
+                                </div>
+                            </div>
+
+
+                            <!-- /.col -->
+                        </div>
+                        <!-- /.row -->
+
+                        <div class="row">
+                            <!-- accepted payments column -->
+                            <div class="card col-md-6">
+                                <div class="card-header border-transparent">
+                                    <h3 class="card-title">Mão de Obra</h3>
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body col-md-12">
+                                    <div class="table-responsive">
+                                        <table class="table m-0">
+                                            <thead>
+                                            <tr>
+                                                <th>Quant.</th>
+                                                <th>Mão de Obra</th>
+                                                <th>Subtotal</th>
+                                                <th>Total</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            {% for item in proposta.orcamento.mao_obra_orcamento.all %}
+                                                <tr>
+                                                    <td>{{ item.quantidade }}</td>
+                                                    <td>{{ item.mao_de_obra.descricao }}</td>
+                                                    <td>{{ item.preco }}</td>
+                                                    <td>
+                                                        {{ item.total }}
+                                                    </td>
+                                                </tr>
+
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- /.table-responsive -->
+                                </div>
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-6">
+                                <p class="lead">Validade: {{ object.validade }}</p>
+
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <tr>
+                                            <th style="width:50%">Total Produtos:</th>
+                                            {% if proposta.orcamento.total_equipamentos %}
+                                            <td>{{ proposta.orcamento.total_equipamentos|convert_real_br }}</td>
+                                            {% else %}
+                                            <td>0,00</td>
+                                            {% endif %}
+                                        </tr>
+                                        <tr>
+                                            <th>Total Mão de Oba</th>
+                                            <td>{{ proposta.orcamento.total_mao_de_obra|convert_real_br }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Entrada:</th>
+                                            {% if proposta.valor_entrada %}
+                                            <td>{{ proposta.valor_entrada|convert_real_br }}</td>
+                                                {% else %}
+                                                <td>R$: 0,00</td>
+                                            {% endif %}
+                                        </tr>
+                                        <tr>
+                                            <th>Total:</th>
+                                            <td>{{ proposta.total|convert_real_br }}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="card card-widget">
+                                    <div class="card-header">
+                                        <div class="user-block">
+                                            <span class="username"><a href="#">Dados de Pagamento Pix</a></span>
+                                            <span class="description">Nome: Marcio Oliveira de Deus</span>
+                                            <span class="description">CPF: 048.555.274-40</span>
+                                        </div>
+                                        <!-- /.user-block -->
+                                        <div class="card-tools">
+
+                                        </div>
+                                        <!-- /.card-tools -->
+                                    </div>
+                                    <!-- /.card-header -->
+                                    <div class="card-body">
+                                        <img class="img-fluid pad" src="{{ proposta.qr_code.url }}" alt="Photo">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.invoice -->
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- ./wrapper -->
+<!-- Page specific script -->
+<script>
+    window.addEventListener("load", window.print());
+</script>
+</body>
+</html>

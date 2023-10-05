@@ -40,7 +40,11 @@
                             <div class="info-box-content">
                                 <span class="info-box-text">Total Equipamentos</span>
                                 <span class="info-box-number">
+                                    {% if object.total_equipamentos %}
                   {{ object.total_equipamentos|convert_real_br }}
+                                    {% else %}
+                                    0,00
+                                    {% endif %}
 
                 </span>
                             </div>
@@ -55,7 +59,11 @@
 
                             <div class="info-box-content">
                                 <span class="info-box-text">Total Mão de Obra</span>
+                                {% if object.total_mao_de_obra %}
                                 <span class="info-box-number">{{ object.total_mao_de_obra|convert_real_br }}</span>
+                                {% else %}
+                                <span class="info-box-number">0,00</span>
+                                {% endif %}
                             </div>
                             <!-- /.info-box-content -->
                         </div>
@@ -72,7 +80,11 @@
 
                             <div class="info-box-content">
                                 <span class="info-box-text">Total Orçamento</span>
+                                {% if object.total %}
                                 <span class="info-box-number">{{ object.total|convert_real_br }}</span>
+                                {% else %}
+                                <span class="info-box-number">0,00</span>
+                                {% endif %}
                             </div>
                             <!-- /.info-box-content -->
                         </div>
@@ -85,7 +97,11 @@
 
                             <div class="info-box-content">
                                 <span class="info-box-text">Lucro</span>
+                                {% if object.total_lucro %}
                                 <span class="info-box-number">{{ object.total_lucro|convert_real_br }}</span>
+                                {% else %}
+                                <span class="info-box-number">0,00</span>
+                                {% endif %}
                             </div>
                             <!-- /.info-box-content -->
                         </div>
@@ -212,9 +228,9 @@
                                         <span class="badge bg-teal">67</span>
                                         <i class="fas fa-inbox"></i> Imprimir
                                     </a>
-                                    <a href="{% url 'proposta:nova_proposta' object.id %}" class="btn btn-app bg-warning">
-                                        <span class="badge bg-info">12</span>
-                                        <i class="fas fa-envelope"></i> Inbox
+                                    <a href="{% url 'proposta:proposta_detalhe' object.id%}" class="btn btn-app bg-warning">
+
+                                        <i class="fas fa-envelope"></i> Gerar Proposta
                                     </a>
                                     <a class="btn btn-app bg-info">
                                         <span class="badge bg-danger">531</span>
@@ -242,7 +258,10 @@
                                     <tr>
                                         <th>Produto</th>
                                         <th>Descrição</th>
-                                        <th>Preço</th>
+                                        <th>Valor Unitário</th>
+                                        <th>quantidade</th>
+                                        <th>Total</th>
+                                        <th>Ação</th>
 
                                     </tr>
                                     </thead>
@@ -252,6 +271,9 @@
                                             <td>{{ item_mao.mao_de_obra }}</td>
                                             <td>{{ item_mao.descricao }}</td>
                                             <td>{{ item_mao.valor|convert_real_br }}</td>
+                                            <td>{{ item_mao.quantidade }}</td>
+
+                                            <td>{{ item_mao.total|convert_real_br }}</td>
                                             <td>
                                                 <button type="button" class="update-servico btn btn-sm btn-primary" data-form-url="{% url 'orcamento:editar_servico_orcamento' item_mao.pk %}">
                                                     <span class="fas fa-pencil-alt"></span>
